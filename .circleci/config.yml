@@ -39,17 +39,24 @@ jobs:
 
   test_remote:
     docker:
-      - image: selenium/standalone-chrome
-      - image: selenium/standalone-firefox
-      - image: selenium/standalone-opera
-      - image: selenium/standalone-edge
-      - image: selenium/standalone-safari
+      - image: circleci/python:3.8
     steps:
       - checkout
       - run:
-          name: Run Tests on Remote Browsers
+          name: Install BrowserStack Local
           command: |
-            export SELENIUM_REMOTE_URL="http://localhost:4444/wd/hub"
+            wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
+            unzip BrowserStackLocal-linux-x64.zip
+            mv BrowserStackLocal /usr/local/bin/BrowserStackLocal
+      - run:
+          name: Start BrowserStack Local
+          background: true
+          command: |
+            BrowserStackLocal $BROWSERSTACK_ACCESS_KEY
+      - run:
+          name: Run Tests on BrowserStack
+          command: |
+            export SELENIUM_REMOTE_URL="https://$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub"
             robot -d results tests/
       - store_artifacts:
           path: results
@@ -62,3 +69,4 @@ workflows:
       - setup
       - test
       - test_remote
+
