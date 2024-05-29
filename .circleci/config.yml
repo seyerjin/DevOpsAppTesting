@@ -21,7 +21,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
             pip install --upgrade pip
-            pip install "packaging<21.0,>=20.4"
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
@@ -40,16 +39,13 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
             pip install --upgrade pip
-            pip install "packaging<21.0,>=20.4"
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
       - run:
           name: Install and Verify ChromeDriver
           command: |
-            python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
-            which chromedriver
-            chromedriver --version
+            python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install(); import shutil; print(shutil.which('chromedriver'))"
       - run:
           name: Run Tests
           command: |
@@ -83,7 +79,6 @@ jobs:
           name: Install Dependencies
           command: |
             pip install --upgrade pip
-            pip install "packaging<21.0,>=20.4"
             pip install robotframework
             pip install robotframework-seleniumlibrary
       - run:
