@@ -1,0 +1,21 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            pip install robotframework robotframework-seleniumlibrary
+            webdrivermanager chrome firefox --linkpath /usr/local/bin
+      - run:
+          name: Run Robot Tests
+          command: robot tests/
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build
