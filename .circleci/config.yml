@@ -21,20 +21,14 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
             pip install --upgrade pip
-            pip install "packaging<21.0,>=20.4"  # Ensure compatibility with poetry
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
+
   test:
     executor: python-executor
     steps:
       - checkout
-      - run:
-          name: Ensure Python and Pip are installed
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python3-pip
-            python3 -m pip install --upgrade pip
       - run:
           name: Install Dependencies
           command: |
@@ -44,29 +38,43 @@ jobs:
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
-            python3 -m pip install --upgrade pip
-            python3 -m pip install robotframework
-            python3 -m pip install robotframework-seleniumlibrary
-            python3 -m pip install chromedriver-autoinstaller
+            pip install --upgrade pip
+            pip install robotframework
+            pip install robotframework-seleniumlibrary
+            pip install chromedriver-autoinstaller
       - run:
           name: Install and Verify ChromeDriver
           command: |
             python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install(); import shutil; print(shutil.which('chromedriver'))"
       - run:
+          name: Set Browser Options
+          command: |
+            echo 'export ROBOT_BROWSER_OPTIONS="--headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222"' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
           name: Run Tests
           command: |
-            export ROBOT_BROWSER_OPTIONS="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222"
-            robot -v BROWSER_OPTIONS:"${ROBOT_BROWSER_OPTIONS}" -d results tests/
+            robot -d results tests/
       - store_artifacts:
           path: results
           destination: test-results
 
+  start_selenium:
+    docker:
+      - image: selenium/standalone-chrome:latest
+        command: ["/opt/bin/entry_point.sh", "--port", "5555"]
+      - image: selenium/standalone-firefox:latest
+        command: ["/opt/bin/entry_point.sh", "--port", "5556"]
+      - image: selenium/standalone-opera:latest
+        command: ["/opt/bin/entry_point.sh", "--port", "5557"]
+      - image: selenium/standalone-edge:latest
+        command: ["/opt/bin/entry_point.sh", "--port", "5558"]
+    steps:
+      - checkout
+
   test_remote:
     docker:
-      - image: selenium/standalone-chrome
-      - image: selenium/standalone-firefox
-      - image: selenium/standalone-opera
-      - image: selenium/standalone-edge
+      - image: circleci/python:3.8
     steps:
       - checkout
       - run:
@@ -91,7 +99,7 @@ jobs:
       - run:
           name: Run Tests on BrowserStack
           command: |
-            export SELENIUM_REMOTE_URL="https://$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub"
+            export SELENIUM_REMOTE_URL="http://localhost:5555/wd/hub"
             robot -d results tests/
       - store_artifacts:
           path: results
@@ -102,5 +110,6 @@ workflows:
   test-workflow:
     jobs:
       - setup
+      - start_selenium
       - test
       - test_remote
