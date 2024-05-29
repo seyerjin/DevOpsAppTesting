@@ -62,7 +62,7 @@ Select Price Option
 
 *** Test Cases ***
 Send Quote
-    Input Text    id=email    seyerjin@proton.me
+    Input Text    id=email    test@test.me
     Input Text    id=phone    12345678
     Input Text    id=username    MartyMcFly68
     Input Text    id=password    Test1324!
