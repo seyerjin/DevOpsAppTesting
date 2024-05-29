@@ -21,6 +21,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
             pip install --upgrade pip
+            pip install "packaging<21.0,>=20.4"
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
@@ -39,6 +40,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
             pip install --upgrade pip
+            pip install "packaging<21.0,>=20.4"
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
@@ -76,6 +78,7 @@ jobs:
           name: Install Dependencies
           command: |
             pip install --upgrade pip
+            pip install "packaging<21.0,>=20.4"
             pip install robotframework
             pip install robotframework-seleniumlibrary
       - run:
