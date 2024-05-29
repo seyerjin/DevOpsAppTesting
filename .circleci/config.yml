@@ -21,38 +21,45 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
             pip install --upgrade pip
+            pip install "packaging<21.0,>=20.4"  # Ensure compatibility with poetry
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
-
-  test:
-    executor: python-executor
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y unzip wget
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
-            pip install --upgrade pip
-            pip install robotframework
-            pip install robotframework-seleniumlibrary
-            pip install chromedriver-autoinstaller
-      - run:
-          name: Install and Verify ChromeDriver
-          command: |
-            python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install(); import shutil; print(shutil.which('chromedriver'))"
-      - run:
-          name: Run Tests
-          command: |
-            robot -d results tests/
-      - store_artifacts:
-          path: results
-          destination: test-results
+test:
+  executor: python-executor
+  steps:
+    - checkout
+    - run:
+        name: Ensure Python and Pip are installed
+        command: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          python3 -m pip install --upgrade pip
+    - run:
+        name: Install Dependencies
+        command: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          python3 -m pip install --upgrade pip
+          python3 -m pip install robotframework
+          python3 -m pip install robotframework-seleniumlibrary
+          python3 -m pip install chromedriver-autoinstaller
+    - run:
+        name: Install and Verify ChromeDriver
+        command: |
+          python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install(); import shutil; print(shutil.which('chromedriver'))"
+    - run:
+        name: Run Tests
+        command: |
+          export ROBOT_BROWSER_OPTIONS="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222"
+          robot -v BROWSER_OPTIONS:"${ROBOT_BROWSER_OPTIONS}" -d results tests/
+    - store_artifacts:
+        path: results
+        destination: test-results
 
   test_remote:
     docker:
