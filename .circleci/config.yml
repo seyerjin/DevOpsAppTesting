@@ -45,9 +45,14 @@ jobs:
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
       - run:
-          name: Run Tests
+          name: Install and Verify ChromeDriver
           command: |
             python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
+            which chromedriver
+            chromedriver --version
+      - run:
+          name: Run Tests
+          command: |
             robot -d results tests/
       - store_artifacts:
           path: results
