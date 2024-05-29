@@ -81,30 +81,6 @@ jobs:
           name: Install BrowserStack Local
           command: |
             wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
-            unzip BrowserStackLocal-linux-x64.zip
-            mkdir -p ~/bin
-            mv BrowserStackLocal ~/bin/BrowserStackLocal
-            export PATH=$PATH:~/bin
-      - run:
-          name: Start BrowserStack Local
-          background: true
-          command: |
-            ~/bin/BrowserStackLocal $BROWSERSTACK_ACCESS_KEY
-      - run:
-          name: Install Dependencies
-          command: |
-            pip install --upgrade pip
-            pip install robotframework
-            pip install robotframework-seleniumlibrary
-      - run:
-          name: Run Tests on BrowserStack
-          command: |
-            export SELENIUM_REMOTE_URL="http://localhost:5555/wd/hub"
-            robot -d results tests/
-      - store_artifacts:
-          path: results
-          destination: test-results
-
 workflows:
   version: 2
   test-workflow:
