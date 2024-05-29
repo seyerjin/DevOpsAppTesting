@@ -20,6 +20,7 @@ jobs:
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
             sudo apt-get update
             sudo apt-get install -y google-chrome-stable
+            pip install --upgrade pip
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
@@ -29,6 +30,20 @@ jobs:
     executor: python-executor
     steps:
       - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y unzip wget
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+            sudo apt-get update
+            sudo apt-get install -y google-chrome-stable
+            pip install --upgrade pip
+            pip install robotframework
+            pip install robotframework-seleniumlibrary
+            pip install chromedriver-autoinstaller
+            chromedriver-autoinstaller install
       - run:
           name: Run Tests
           command: |
@@ -47,12 +62,20 @@ jobs:
           command: |
             wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
             unzip BrowserStackLocal-linux-x64.zip
-            mv BrowserStackLocal /usr/local/bin/BrowserStackLocal
+            mkdir -p ~/bin
+            mv BrowserStackLocal ~/bin/BrowserStackLocal
+            export PATH=$PATH:~/bin
       - run:
           name: Start BrowserStack Local
           background: true
           command: |
-            BrowserStackLocal $BROWSERSTACK_ACCESS_KEY
+            ~/bin/BrowserStackLocal $BROWSERSTACK_ACCESS_KEY
+      - run:
+          name: Install Dependencies
+          command: |
+            pip install --upgrade pip
+            pip install robotframework
+            pip install robotframework-seleniumlibrary
       - run:
           name: Run Tests on BrowserStack
           command: |
@@ -69,4 +92,3 @@ workflows:
       - setup
       - test
       - test_remote
-
