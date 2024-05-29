@@ -5,9 +5,20 @@ Library    SeleniumLibrary
 ${BROWSER}    Chrome
 ${URL}        http://sampleapp.tricentis.com/101/app.php
 
+*** Keywords ***
+Setup Chrome Browser
+    [Arguments]    ${options}
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    ${args}=    Split String    ${options}
+    :FOR    ${arg}    IN    @{args}
+    \    Call Method    ${chrome_options}    add_argument    ${arg}
+    RETURN    ${chrome_options}
+
 *** Test Cases ***
 Enter Vehicle Data
-    Open Browser    ${URL}    ${BROWSER}
+    ${options}=    Set Variable    --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222
+    ${chrome_options}=    Setup Chrome Browser    ${options}
+    Open Browser    ${URL}    ${BROWSER}    options=${chrome_options}
     Select From List By Label    id=make    Volkswagen
     Select From List By Label    id=model    Scooter
     Input Text    id=cylindercapacity    2000
@@ -24,7 +35,7 @@ Enter Vehicle Data
     Input Text    id=licenseplatenumber    BTTF1.21GW
     Input Text    id=annualmileage    21000
     Click Button    id=nextenterinsurantdata  # Updated button selector
-    #[Teardown]    Close Browser
+    [Teardown]    Close Browser
 
 *** Test Cases ***
 Enter Insurant Data
@@ -40,7 +51,7 @@ Enter Insurant Data
     Execute Javascript    document.getElementById('cliffdiving').click()
     Execute Javascript    document.getElementById('bungeejumping').click()
     Input Text    id=website    https://www.backtothefuture.com/
-    Input Text    id=picture    .\tests\car.webp
+    Input Text    id=picture    .\\tests\\car.webp
     Click Button    id=nextenterproductdata    
 
 *** Test Cases ***
@@ -52,10 +63,9 @@ Enter Product Data
     Execute Javascript    document.getElementById('EuroProtection').click()
     Select From List By Label    id=courtesycar    Yes
     Click Button    id=nextselectpriceoption   
-    
+
 *** Test Cases ***
 Select Price Option
-
     Execute Javascript    document.getElementById('selectplatinum').click()
     Wait Until Element Is Visible    id=nextsendquote    timeout=5s
     Click Button    id=nextsendquote
