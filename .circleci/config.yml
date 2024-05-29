@@ -1,0 +1,64 @@
+version: 2.1
+
+executors:
+  python-executor:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+
+jobs:
+  setup:
+    executor: python-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y unzip wget
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+            sudo apt-get update
+            sudo apt-get install -y google-chrome-stable
+            pip install robotframework
+            pip install robotframework-seleniumlibrary
+            pip install chromedriver-autoinstaller
+            chromedriver-autoinstaller install
+
+  test:
+    executor: python-executor
+    steps:
+      - checkout
+      - run:
+          name: Run Tests
+          command: |
+            robot -d results tests/
+      - store_artifacts:
+          path: results
+          destination: test-results
+
+  test_remote:
+    docker:
+      - image: selenium/standalone-chrome
+      - image: selenium/standalone-firefox
+      - image: selenium/standalone-opera
+      - image: selenium/standalone-edge
+      - image: selenium/standalone-safari
+    steps:
+      - checkout
+      - run:
+          name: Run Tests on Remote Browsers
+          command: |
+            export SELENIUM_REMOTE_URL="http://localhost:4444/wd/hub"
+            robot -d results tests/
+      - store_artifacts:
+          path: results
+          destination: test-results
+
+workflows:
+  version: 2
+  test-workflow:
+    jobs:
+      - setup
+      - test
+      - test_remote
