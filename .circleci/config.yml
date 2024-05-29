@@ -24,7 +24,6 @@ jobs:
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
-            chromedriver-autoinstaller install
 
   test:
     executor: python-executor
@@ -43,10 +42,10 @@ jobs:
             pip install robotframework
             pip install robotframework-seleniumlibrary
             pip install chromedriver-autoinstaller
-            chromedriver-autoinstaller install
       - run:
           name: Run Tests
           command: |
+            python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
             robot -d results tests/
       - store_artifacts:
           path: results
@@ -54,7 +53,10 @@ jobs:
 
   test_remote:
     docker:
-      - image: circleci/python:3.8
+      - image: selenium/standalone-chrome
+      - image: selenium/standalone-firefox
+      - image: selenium/standalone-opera
+      - image: selenium/standalone-edge
     steps:
       - checkout
       - run:
