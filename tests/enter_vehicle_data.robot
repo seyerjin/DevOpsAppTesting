@@ -12,7 +12,7 @@ Open Browser With Options
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
 
     # Add headless argument based on the browser
-    #Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
+    Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Safari'    Call Method    ${options}    add_argument    --headless
