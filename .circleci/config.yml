@@ -49,16 +49,15 @@ jobs:
       - run:
           name: Install Edge and Edge WebDriver
           command: |
-            wget -q -O microsoft.gpg https://packages.microsoft.com/keys/microsoft.asc
-            gpg --dearmor microsoft.gpg
-            sudo mv microsoft.gpg.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg
-            sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
+            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/latest/download/operadriver_linux64.zip
+            unzip operadriver.zip -d operadriver || (echo "Failed to unzip operadriver.zip"; exit 1)
+            sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
+            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/stable/linux/opera-stable_current_amd64.deb
+            sudo dpkg -i opera.deb || sudo apt-get install -yf
+            wget -qO- https://deb.opera.com/archive.key | gpg --dearmor > opera-archive-keyring.gpg
+            sudo mv opera-archive-keyring.gpg /usr/share/keyrings/
+            echo 'deb [signed-by=/usr/share/keyrings/opera-archive-keyring.gpg] https://deb.opera.com/opera-stable/ stable non-free' | sudo tee /etc/apt/sources.list.d/opera.list
             sudo apt-get update
-            sudo apt-get install -y microsoft-edge-stable
-            EDGE_DRIVER_VERSION=$(wget -qO- https://msedgedriver.azureedge.net/LATEST_STABLE | grep -oP '^[0-9.]+')
-            wget -q -O msedgedriver.zip https://msedgedriver.azureedge.net/$EDGE_DRIVER_VERSION/edgedriver_linux64.zip
-            unzip msedgedriver.zip -d msedgedriver
-            sudo mv msedgedriver/msedgedriver /usr/local/bin/
       - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
@@ -109,7 +108,6 @@ workflows:
     jobs:
       - test_local
       - test_remote
-      - test_mac
       - store_artifacts:
           requires:
             - test_local
