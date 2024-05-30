@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 
 *** Variables ***
 ${BROWSER}    Chrome
-${URL}        http://sampleapp.tricentis.com/101/app.php
+${URL}        https://sampleapp.tricentis.com/101/app.php
 
 *** Keywords ***
 Open Browser With Options
@@ -12,10 +12,10 @@ Open Browser With Options
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
 
     # Add headless argument based on the browser
-    Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Safari'    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Safari'    Call Method    ${options}    add_argument    --headless
     
     ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
     Open Browser    ${url}    ${actual_browser}    options=${options}
@@ -40,11 +40,11 @@ Enter Vehicle Data
     Input Text    id=cylindercapacity    2000
     Input Text    id=engineperformance    80
     Input Text    id=dateofmanufacture    01/01/2024
-    Select From List By Label    id=fuel    Diesel
-    #Click Element    css=span.ideal-radio
-    Execute Javascript    document.getElementById('righthanddriveno').clic
-    Select From List By Label    id=numberofseatsmotorcycle    3
     Select From List By Label    id=numberofseats    5
+    Select From List By Label    id=fuel    Diesel
+    Execute Javascript    document.getElementById('righthanddriveno').click()
+    #Click Element    css=span.ideal-radio
+    Select From List By Label    id=numberofseatsmotorcycle    3
     Input Text    id=payload    500
     Input Text    id=totalweight    2000
     Input Text    id=listprice    50000
@@ -83,8 +83,14 @@ Enter Product Data
 *** Test Cases ***
 Select Price Option
     Execute Javascript    document.getElementById('selectplatinum').click()
-    #Select Price Option And Validate    selectplatinum
     Wait Until Element Is Visible    id=nextsendquote    timeout=5s
+    # Extract the displayed price for Platinum
+    ${displayed_price}=    Get Text    id=selectplatinum_price
+    Log    Displayed Price: ${displayed_price}
+    # Define the expected price based on your calculation
+    ${expected_price}=    Set Variable    655.00  # Replace with the actual expected value
+    # Verify the price
+    Should Be Equal As Numbers    ${displayed_price}    ${expected_price}
     Click Button    id=nextsendquote
 
 *** Test Cases ***
