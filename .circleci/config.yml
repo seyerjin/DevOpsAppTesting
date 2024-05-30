@@ -75,21 +75,23 @@ jobs:
           destination: test-reports
   test_mac:
     macos:
-      xcode: "15.4.0"
+      xcode: "15.4.0"  # Korrigierte Xcode-Version
     steps:
       - checkout
       - run:
-          name: Install necessary system dependencies
-          command: brew install geckodriver chromedriver operadriver
-      - run:
           name: Install Robot Framework and SeleniumLibrary
-          command: pip3 install robotframework robotframework-seleniumlibrary
+          command: |
+            pip3 install robotframework robotframework-seleniumlibrary selenium
       - run:
-          name: "Run Tests on Multiple Browsers"
+          name: Enable SafariDriver
+          command: |
+            sudo safaridriver --enable
+      - run:
+          name: "Run Tests on Safari-Browser (MAC)"
           command: |
             robot -v BROWSER:Safari -d results/safari tests/
       - store_artifacts:
-          path: results/remote
+          path: results/safari
           destination: test-reports
 
   store_artifacts:
@@ -109,6 +111,7 @@ workflows:
     jobs:
       - test_local
       - test_remote
+      - test_mac
       - store_artifacts:
           requires:
             - test_local

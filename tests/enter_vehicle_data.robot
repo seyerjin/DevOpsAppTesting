@@ -15,18 +15,8 @@ Open Browser With Options
     Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
-
-    # Specify binary location for Opera
-    #Run Keyword If    '${browser}' == 'Opera'    Evaluate    setattr(${options}, 'binary_location', '/usr/bin/opera')    sys, selenium.webdriver
-    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
-    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
-    #Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Opera'    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
-
+    Run Keyword If    '${browser}' == 'Safari'    Call Method    ${options}    add_argument    --headless
+    
     ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
     Open Browser    ${url}    ${actual_browser}    options=${options}
     #Open Browser    ${url}    ${browser}    options=${options}
