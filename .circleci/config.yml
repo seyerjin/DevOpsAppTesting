@@ -39,7 +39,7 @@ jobs:
           command: |
             wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
             unzip operadriver.zip -d operadriver
-            sudo mv operadriver/operadriver /usr/local/bin/
+            sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
             sudo apt-get install -y software-properties-common
             sudo add-apt-repository 'deb https://deb.opera.com/opera-stable/ stable non-free'
             wget -qO- https://deb.opera.com/archive.key | sudo apt-key add -
