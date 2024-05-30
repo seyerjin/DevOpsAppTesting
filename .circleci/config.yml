@@ -37,43 +37,24 @@ jobs:
       - run:
           name: Install Opera and OperaDriver
           command: |
-            set -e  # Stop the script on errors
-
-            # Install dependencies for fetching the latest versions
-            sudo apt-get update && sudo apt-get install -y curl jq
-
-            # Fetch the latest OperaDriver version dynamically
-            LATEST_OPERA_DRIVER_URL=$(curl -s https://api.github.com/repos/operasoftware/operachromiumdriver/releases/latest | jq -r '.assets[] | select(.name | test("operadriver_linux64.zip")) | .browser_download_url')
-            wget -q -O operadriver.zip $LATEST_OPERA_DRIVER_URL
+            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
             unzip operadriver.zip -d operadriver
             sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
-
-            # Fetch the latest Opera Browser version dynamically
-            LATEST_OPERA_DEB_URL=$(curl -s https://ftp.opera.com/ftp/pub/opera/desktop/ | grep -oP 'href="\K[^"]+' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/$' | sort -V | tail -n 1 | xargs -I{} echo "https://ftp.opera.com/ftp/pub/opera/desktop/{}/linux/opera-stable_current_amd64.deb")
-            wget -q -O opera.deb $LATEST_OPERA_DEB_URL
+            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/84.0.4316.21/linux/opera-stable_84.0.4316.21_amd64.deb
             sudo dpkg -i opera.deb || sudo apt-get install -yf
-
-            # Verify installation
-            if ! command -v operadriver &> /dev/null; then
-              echo "OperaDriver installation failed!"
-              exit 1
-            fi
-            if ! dpkg -l | grep -q opera; then
-              echo "Opera installation failed!"
-              exit 1
-            fi
       - run:
           name: Install Edge and Edge WebDriver
           command: |
-            wget -q -O microsoft.gpg https://packages.microsoft.com/keys/microsoft.asc
-            sudo apt-key add microsoft.gpg
-            sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
-            sudo apt-get update
-            sudo apt-get install -y microsoft-edge-stable
-            EDGE_DRIVER_VERSION=$(wget -qO- https://msedgedriver.azureedge.net/LATEST_STABLE | grep -oP '^[0-9.]+')
-            wget -q -O msedgedriver.zip https://msedgedriver.azureedge.net/$EDGE_DRIVER_VERSION/edgedriver_linux64.zip
-            unzip msedgedriver.zip -d msedgedriver
-            sudo mv msedgedriver/msedgedriver /usr/local/bin/
+            sudo apt-get update && sudo apt-get install -y curl jq
+            EDGE_DEB_URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -oP 'href="\K[^"]+' | grep -E 'amd64\.deb$' | sort -V | tail -n 1 | xargs -I{} echo "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/{}")
+            echo "Downloading Microsoft Edge from: $EDGE_DEB_URL"
+            wget -q -O edge.deb $EDGE_DEB_URL
+            sudo dpkg -i edge.deb || sudo apt-get install -yf
+            LATEST_EDGE_DRIVER_URL=$(curl -s https://msedgedriver.azureedge.net/LATEST_STABLE | xargs -I{} echo "https://msedgedriver.azureedge.net/{}/edgedriver_linux64.zip")
+            echo "Downloading Edge WebDriver from: $LATEST_EDGE_DRIVER_URL"
+            wget -q -O edgedriver.zip $LATEST_EDGE_DRIVER_URL
+            unzip edgedriver.zip -d edgedriver
+            sudo mv edgedriver/msedgedriver /usr/local/bin/
       - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
