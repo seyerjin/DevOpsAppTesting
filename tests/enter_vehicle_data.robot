@@ -15,7 +15,7 @@ Open Browser With Options
     Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Opera'    Set Variable    ${options}    NONE
-    Run Keyword If    '${browser}' == 'Edge'    Set Variable    ${options}    NONE
+    Run Keyword If    '${browser}' == 'Edge'    Set Variable    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
     Open Browser    ${url}    ${browser}    options=${options}
 
