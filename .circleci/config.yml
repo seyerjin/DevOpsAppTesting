@@ -35,6 +35,17 @@ jobs:
           name: Install necessary system dependencies for browsers
           command: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxt6 libasound2
       - run:
+          name: Install Opera and OperaDriver
+          command: |
+            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
+            unzip operadriver.zip -d operadriver
+            sudo mv operadriver/operadriver /usr/local/bin/
+            sudo apt-get install -y software-properties-common
+            sudo add-apt-repository 'deb https://deb.opera.com/opera-stable/ stable non-free'
+            wget -qO- https://deb.opera.com/archive.key | sudo apt-key add -
+            sudo apt-get update
+            sudo apt-get install -y opera-stable
+      - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
       - run:
@@ -42,6 +53,7 @@ jobs:
           command: |
             robot -v BROWSER:Chrome -d results/remote tests/
             robot -v BROWSER:Firefox -d results/remote tests/
+            robot -v BROWSER:Opera -d results/remote tests/
             robot -v BROWSER:Edge -d results/remote tests/
             robot -v BROWSER:Safari -d results/remote tests/
       - store_artifacts:
