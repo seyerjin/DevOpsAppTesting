@@ -17,7 +17,7 @@ Open Browser With Options
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
 
     # Specify binary location for Opera
-    Run Keyword If    '${browser}' == 'Opera'    Set To Variable    ${options.binary_location}    /usr/bin/opera
+    Run Keyword If    '${browser}' == 'Opera'    Evaluate    ${options}.binary_location='/usr/bin/opera'    sys, selenium.webdriver
 
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
