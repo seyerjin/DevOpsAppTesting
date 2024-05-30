@@ -21,6 +21,15 @@ Open Browser With Options
     Open Browser    ${url}    ${actual_browser}    options=${options}
     #Open Browser    ${url}    ${browser}    options=${options}
 
+Select Price Option And Validate
+    [Arguments]    ${price_option}
+    Execute Javascript    document.getElementById('select${price_option}').click()
+    ${price_per_year}=    Get Text    xpath=//table[@id='priceTable']//td[contains(text(), 'Price per Year')]/following-sibling::td[contains(text(), '${price_option}')]
+    Log    Price Per Year for ${price_option}: ${price_per_year}
+
+Submit Form And Validate
+    Click Button    id=sendemail
+    Wait Until Page Contains    Sending e-mail success!    timeout=10s
 
 *** Test Cases ***
 Enter Vehicle Data
@@ -73,8 +82,8 @@ Enter Product Data
     
 *** Test Cases ***
 Select Price Option
-
     Execute Javascript    document.getElementById('selectplatinum').click()
+    #Select Price Option And Validate    selectplatinum
     Wait Until Element Is Visible    id=nextsendquote    timeout=5s
     Click Button    id=nextsendquote
 
@@ -86,6 +95,7 @@ Send Quote
     Input Text    id=password    Test1324!
     Input Text    id=confirmpassword    Test1324!
     Input Text    id=Comments    Thanks!
-    Wait Until Element Is Visible    id=sendemail    timeout=5s
-    Click Button    id=sendemail
+    Wait Until Element Is Visible    id=sendemail    timeout=10s
+    #Click Button    id=sendemail
+    Submit Form And Validate
     [Teardown]    Close Browser
