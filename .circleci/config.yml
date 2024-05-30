@@ -39,6 +39,8 @@ jobs:
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
+            Xvfb :99 -ac &
+            export DISPLAY=:99
             mkdir -p results/remote
             robot -v BROWSER:chrome -d results/remote tests/
             robot -v BROWSER:firefox -d results/remote tests/
