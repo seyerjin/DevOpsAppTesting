@@ -40,11 +40,8 @@ jobs:
             wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
             unzip operadriver.zip -d operadriver
             sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
-            sudo apt-get install -y software-properties-common
-            sudo add-apt-repository 'deb https://deb.opera.com/opera-stable/ stable non-free'
-            wget -qO- https://deb.opera.com/archive.key | sudo apt-key add -
-            sudo apt-get update
-            sudo apt-get install -y opera-stable
+            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/84.0.4316.21/linux/opera-stable_84.0.4316.21_amd64.deb
+            sudo dpkg -i opera.deb || sudo apt-get install -yf
       - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
