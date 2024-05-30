@@ -87,6 +87,10 @@ jobs:
           command: |
             sudo safaridriver --enable
       - run:
+          name: Enable Safari Remote Automation
+          command: |
+            osascript enable_safari_automation.applescript
+      - run:
           name: "Run Tests on Safari-Browser (MAC)"
           command: |
             robot -v BROWSER:Safari -d results/safari tests/
