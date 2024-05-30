@@ -30,6 +30,7 @@ jobs:
       - image: cimg/python:3.9
     steps:
       - checkout
+      - browser-tools/install-browser-tools
       - run:
           name: Install necessary system dependencies for browsers
           command: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxt6 libasound2
