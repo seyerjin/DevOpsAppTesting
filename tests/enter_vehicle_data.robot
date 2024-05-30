@@ -2,22 +2,23 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${BROWSER}    Chrome
+${BROWSER}    chrome
 ${URL}        http://sampleapp.tricentis.com/101/app.php
 
 *** Keywords ***
-Open Headless Chrome Browser
-    [Arguments]    ${url}
-    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
-    Call Method    ${chrome_options}    add_argument    --headless
-    Call Method    ${chrome_options}    add_argument    --no-sandbox
-    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
-    Call Method    ${chrome_options}    add_argument    --disable-gpu
-    Open Browser    ${url}    ${BROWSER}    options=${chrome_options}
+Open Browser With Options
+    [Arguments]    ${url}    ${browser}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
+    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --headless
+    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --no-sandbox
+    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --disable-gpu
+    Run Keyword If    '${browser}' == 'firefox'    Call Method    ${options}    add_argument    -headless
+    Open Browser    ${url}    ${browser}    options=${options}
 
 *** Test Cases ***
 Enter Vehicle Data
-    Open Headless Chrome Browser    ${URL}
+    Open Browser With Options    ${URL}    ${BROWSER}
     #Open Browser    ${URL}    ${BROWSER}
     Select From List By Label    id=make    Volkswagen
     Select From List By Label    id=model    Scooter
@@ -79,4 +80,6 @@ Send Quote
     Input Text    id=password    Test1324!
     Input Text    id=confirmpassword    Test1324!
     Input Text    id=Comments    Thanks!
+    Wait Until Element Is Visible    id=sendemail    timeout=5s
     Click Button    id=sendemail
+    [Teardown]    Close Browser
