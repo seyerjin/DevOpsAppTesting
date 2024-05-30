@@ -42,7 +42,6 @@ jobs:
           command: |
             robot -v BROWSER:Chrome -d results/ tests/
             robot -v BROWSER:Firefox -d results/ tests/
-            robot -v BROWSER:Opera -d results/ tests/
             robot -v BROWSER:Edge -d results/ tests/
             robot -v BROWSER:Safari -d results/ tests/
       - store_artifacts:
