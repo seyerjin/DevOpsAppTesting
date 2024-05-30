@@ -75,7 +75,7 @@ jobs:
           destination: test-reports
   test_mac:
     macos:
-      xcode: "15.4.0"  # Korrigierte Xcode-Version
+      xcode: "12.5.1"
     steps:
       - checkout
       - run:
