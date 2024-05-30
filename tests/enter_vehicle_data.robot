@@ -8,18 +8,21 @@ ${URL}        http://sampleapp.tricentis.com/101/app.php
 *** Keywords ***
 Open Browser With Options
     [Arguments]    ${url}    ${browser}
-    # For Chrome and Opera, use ChromeOptions
-    ${options}=    Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
-    # For other browsers, use their respective options
-    ${options}=    Run Keyword Unless    '${browser}' in ['Chrome', 'Opera']    Evaluate    sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
+    # Initialize options based on the browser
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
+    
+    # Add headless argument based on the browser
+    Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
+    Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
+    Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
 
-    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
-    Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Opera'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Opera'    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
     Open Browser    ${url}    ${browser}    options=${options}
 
