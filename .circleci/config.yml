@@ -40,17 +40,14 @@ jobs:
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
-            Xvfb :99 -ac &
-            export DISPLAY=:99
-            mkdir -p results/remote
-            robot -v BROWSER:chrome -d results/remote tests/
-            robot -v BROWSER:firefox -d results/remote tests/
-            robot -v BROWSER:opera -d results/remote tests/
-            robot -v BROWSER:edge -d results/remote tests/
-            robot -v BROWSER:safari -d results/remote tests/
+            robot -v BROWSER:Chrome -d results/ tests/
+            robot -v BROWSER:Firefox -d results/ tests/
+            robot -v BROWSER:Opera -d results/ tests/
+            robot -v BROWSER:Edge -d results/ tests/
+            robot -v BROWSER:Safari -d results/ tests/
       - store_artifacts:
-          path: results/remote
-          destination: test-reports/remote
+          path: results/
+          destination: test-reports
 
   store_artifacts:
     docker:

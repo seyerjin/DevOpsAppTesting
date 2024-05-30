@@ -2,19 +2,23 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${BROWSER}    chrome
+${BROWSER}    Chrome
 ${URL}        http://sampleapp.tricentis.com/101/app.php
 
 *** Keywords ***
 Open Browser With Options
     [Arguments]    ${url}    ${browser}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --no-sandbox
-    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Run Keyword If    '${browser}' == 'chrome'    Call Method    ${options}    add_argument    --disable-gpu
-    Run Keyword If    '${browser}' == 'firefox'    Call Method    ${options}    add_argument    -headless
+    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
+    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
+    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
+    Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
+    Run Keyword If    '${browser}' == 'Opera'    Set Variable    ${options}    NONE
+    Run Keyword If    '${browser}' == 'Edge'    Set Variable    ${options}    NONE
+    Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
     Open Browser    ${url}    ${browser}    options=${options}
+
 
 *** Test Cases ***
 Enter Vehicle Data
