@@ -43,6 +43,18 @@ jobs:
             wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/84.0.4316.21/linux/opera-stable_84.0.4316.21_amd64.deb
             sudo dpkg -i opera.deb || sudo apt-get install -yf
       - run:
+          name: Install Edge and Edge WebDriver
+          command: |
+            wget -q -O microsoft.gpg https://packages.microsoft.com/keys/microsoft.asc
+            sudo apt-key add microsoft.gpg
+            sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
+            sudo apt-get update
+            sudo apt-get install -y microsoft-edge-stable
+            EDGE_DRIVER_VERSION=$(wget -qO- https://msedgedriver.azureedge.net/LATEST_STABLE | grep -oP '^[0-9.]+')
+            wget -q -O msedgedriver.zip https://msedgedriver.azureedge.net/$EDGE_DRIVER_VERSION/edgedriver_linux64.zip
+            unzip msedgedriver.zip -d msedgedriver
+            sudo mv msedgedriver/msedgedriver /usr/local/bin/
+      - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
       - run:
@@ -56,7 +68,25 @@ jobs:
       - store_artifacts:
           path: results/remote
           destination: test-reports
-
+  test_mac:
+    macos:
+      xcode: "15.4.0"
+    steps:
+      - checkout
+      - run:
+          name: Install necessary system dependencies
+          command: brew install geckodriver chromedriver operadriver
+      - run:
+          name: Install Robot Framework and SeleniumLibrary
+          command: pip3 install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Multiple Browsers"
+          command: |
+            robot -v BROWSER:Safari -d results/safari tests/
+      - store_artifacts:
+          path: results/remote
+          destination: test-reports
+          
   store_artifacts:
     docker:
       - image: cimg/python:3.9
