@@ -37,17 +37,22 @@ jobs:
       - run:
           name: Install Opera and OperaDriver
           command: |
-            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
+            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/latest/download/operadriver_linux64.zip
             unzip operadriver.zip -d operadriver
             sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
-            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/84.0.4316.21/linux/opera-stable_84.0.4316.21_amd64.deb
+            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/stable/linux/opera-stable_current_amd64.deb
             sudo dpkg -i opera.deb || sudo apt-get install -yf
+            wget -qO- https://deb.opera.com/archive.key | gpg --dearmor > opera-archive-keyring.gpg
+            sudo mv opera-archive-keyring.gpg /usr/share/keyrings/
+            echo 'deb [signed-by=/usr/share/keyrings/opera-archive-keyring.gpg] https://deb.opera.com/opera-stable/ stable non-free' | sudo tee /etc/apt/sources.list.d/opera.list
+            sudo apt-get update
       - run:
           name: Install Edge and Edge WebDriver
           command: |
             wget -q -O microsoft.gpg https://packages.microsoft.com/keys/microsoft.asc
-            sudo apt-key add microsoft.gpg
-            sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
+            gpg --dearmor microsoft.gpg
+            sudo mv microsoft.gpg.gpg /usr/share/keyrings/microsoft-archive-keyring.gpg
+            sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
             sudo apt-get update
             sudo apt-get install -y microsoft-edge-stable
             EDGE_DRIVER_VERSION=$(wget -qO- https://msedgedriver.azureedge.net/LATEST_STABLE | grep -oP '^[0-9.]+')
@@ -86,7 +91,7 @@ jobs:
       - store_artifacts:
           path: results/remote
           destination: test-reports
-          
+
   store_artifacts:
     docker:
       - image: cimg/python:3.9
@@ -104,6 +109,7 @@ workflows:
     jobs:
       - test_local
       - test_remote
+      - test_mac
       - store_artifacts:
           requires:
             - test_local
