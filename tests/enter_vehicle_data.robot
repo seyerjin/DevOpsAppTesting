@@ -5,9 +5,20 @@ Library    SeleniumLibrary
 ${BROWSER}    Chrome
 ${URL}        http://sampleapp.tricentis.com/101/app.php
 
+*** Keywords ***
+Open Headless Chrome Browser
+    [Arguments]    ${url}
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${chrome_options}    add_argument    --headless
+    Call Method    ${chrome_options}    add_argument    --no-sandbox
+    Call Method    ${chrome_options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${chrome_options}    add_argument    --disable-gpu
+    Open Browser    ${url}    ${BROWSER}    options=${chrome_options}
+
 *** Test Cases ***
 Enter Vehicle Data
-    Open Browser    ${URL}    ${BROWSER}
+    Open Headless Chrome Browser    ${URL}
+    #Open Browser    ${URL}    ${BROWSER}
     Select From List By Label    id=make    Volkswagen
     Select From List By Label    id=model    Scooter
     Input Text    id=cylindercapacity    2000

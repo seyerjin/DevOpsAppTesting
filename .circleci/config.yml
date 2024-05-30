@@ -19,7 +19,11 @@ jobs:
       - run:
           name: "Run Tests on Local Chrome"
           command: |
-            robot -v BROWSER:chrome -d results tests/
+            mkdir -p results/local
+            robot -v BROWSER:chrome -d results/local tests/
+      - store_artifacts:
+          path: results/local
+          destination: test-reports/local
 
   test_remote:
     docker:
@@ -35,11 +39,15 @@ jobs:
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
-            robot -v BROWSER:chrome -d results tests/
-            robot -v BROWSER:firefox -d results tests/
-            robot -v BROWSER:opera -d results tests/
-            robot -v BROWSER:edge -d results tests/
-            robot -v BROWSER:safari -d results tests/
+            mkdir -p results/remote
+            robot -v BROWSER:chrome -d results/remote tests/
+            robot -v BROWSER:firefox -d results/remote tests/
+            robot -v BROWSER:opera -d results/remote tests/
+            robot -v BROWSER:edge -d results/remote tests/
+            robot -v BROWSER:safari -d results/remote tests/
+      - store_artifacts:
+          path: results/remote
+          destination: test-reports/remote
 
   store_artifacts:
     docker:
