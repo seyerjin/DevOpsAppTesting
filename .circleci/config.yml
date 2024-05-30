@@ -38,22 +38,21 @@ jobs:
           name: Install Opera and OperaDriver
           command: |
             set -e  # Stop the script on errors
-            
-            # Download and unzip OperaDriver
-            wget -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/latest/download/operadriver_linux64.zip
+
+            # Install dependencies for fetching the latest versions
+            sudo apt-get update && sudo apt-get install -y curl jq
+
+            # Fetch the latest OperaDriver version dynamically
+            LATEST_OPERA_DRIVER_URL=$(curl -s https://api.github.com/repos/operasoftware/operachromiumdriver/releases/latest | jq -r '.assets[] | select(.name | test("operadriver_linux64.zip")) | .browser_download_url')
+            wget -q -O operadriver.zip $LATEST_OPERA_DRIVER_URL
             unzip operadriver.zip -d operadriver
-            if [ ! -f operadriver/operadriver_linux64/operadriver ]; then
-              echo "OperaDriver not found after unzipping!"
-              exit 1
-            fi
             sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
-            
-            # Download and install Opera Browser
-            wget -O opera.deb https://download3.operacdn.com/pub/opera/desktop/stable/linux/opera-stable_current_amd64.deb
+
+            # Fetch the latest Opera Browser version dynamically
+            LATEST_OPERA_DEB_URL=$(curl -s https://ftp.opera.com/ftp/pub/opera/desktop/ | grep -oP 'href="\K[^"]+' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/$' | sort -V | tail -n 1 | xargs -I{} echo "https://ftp.opera.com/ftp/pub/opera/desktop/{}/linux/opera-stable_current_amd64.deb")
+            wget -q -O opera.deb $LATEST_OPERA_DEB_URL
             sudo dpkg -i opera.deb || sudo apt-get install -yf
-            sudo apt-get update
-            sudo apt-get install -yf
-            
+
             # Verify installation
             if ! command -v operadriver &> /dev/null; then
               echo "OperaDriver installation failed!"
