@@ -37,11 +37,16 @@ jobs:
       - run:
           name: Install Opera and OperaDriver
           command: |
+            # Download and unzip OperaDriver
             wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/latest/download/operadriver_linux64.zip
-            unzip operadriver.zip -d operadriver
+            unzip -o operadriver.zip -d operadriver
             sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
+            
+            # Download and install Opera Browser
             wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/stable/linux/opera-stable_current_amd64.deb
             sudo dpkg -i opera.deb || sudo apt-get install -yf
+            sudo apt-get update
+            sudo apt-get install -yf
       - run:
           name: Install Edge and Edge WebDriver
           command: |
