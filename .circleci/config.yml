@@ -38,7 +38,7 @@ jobs:
           name: Install Opera and OperaDriver
           command: |
             wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/latest/download/operadriver_linux64.zip
-            unzip operadriver.zip -d operadriver
+            unzip operadriver.zip -d operadriver || (echo "Failed to unzip operadriver.zip"; exit 1)
             sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
             wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/stable/linux/opera-stable_current_amd64.deb
             sudo dpkg -i opera.deb || sudo apt-get install -yf
