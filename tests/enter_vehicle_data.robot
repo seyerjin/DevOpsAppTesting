@@ -10,13 +10,13 @@ Open Browser With Options
     [Arguments]    ${url}    ${browser}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
-    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
+    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
+    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Opera'    Set Variable    ${options}    NONE
+    Run Keyword If    '${browser}' == 'Opera'    Set Variable    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
+    #Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
     Open Browser    ${url}    ${browser}    options=${options}
 
 

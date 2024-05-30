@@ -67,8 +67,8 @@ jobs:
           command: |
             robot -v BROWSER:Chrome -d results/remote tests/
             robot -v BROWSER:Firefox -d results/remote tests/
-            #robot -v BROWSER:Opera -d results/remote tests/
             robot -v BROWSER:Edge -d results/remote tests/
+            robot -v BROWSER:Opera -d results/remote tests/
             #robot -v BROWSER:Safari -d results/remote tests/
       - store_artifacts:
           path: results/remote
