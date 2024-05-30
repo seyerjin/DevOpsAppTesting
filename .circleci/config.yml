@@ -1,91 +1,59 @@
 version: 2.1
 
-executors:
-  python-executor:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/repo
+orbs:
+  browser-tools: circleci/browser-tools@1.1.3
+  python: circleci/python@1.4.0
 
 jobs:
-  setup:
-    executor: python-executor
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y unzip wget
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
-            pip install --upgrade pip
-            pip install robotframework
-            pip install robotframework-seleniumlibrary
-            pip install chromedriver-autoinstaller
-
-  test:
-    executor: python-executor
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y unzip wget
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
-            pip install --upgrade pip
-            pip install robotframework
-            pip install robotframework-seleniumlibrary
-            pip install chromedriver-autoinstaller
-      - run:
-          name: Install and Verify ChromeDriver
-          command: |
-            python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install(); import shutil; print(shutil.which('chromedriver'))"
-      - run:
-          name: Set Browser Options
-          command: |
-            echo 'export ROBOT_BROWSER_OPTIONS="--headless --no-sandbox --disable-dev-shm-usage --remote-debugging-port=9222"' >> $BASH_ENV
-            source $BASH_ENV
-      - run:
-          name: Run Tests
-          command: |
-            robot -d results tests/
-      - store_artifacts:
-          path: results
-          destination: test-results
-
-  start_selenium:
+  test_local:
     docker:
-      - image: selenium/standalone-chrome:latest
-        command: ["/opt/bin/entry_point.sh", "--port", "5555"]
-      - image: selenium/standalone-firefox:latest
-        command: ["/opt/bin/entry_point.sh", "--port", "5556"]
-      - image: selenium/standalone-opera:latest
-        command: ["/opt/bin/entry_point.sh", "--port", "5557"]
-      - image: selenium/standalone-edge:latest
-        command: ["/opt/bin/entry_point.sh", "--port", "5558"]
+      - image: cimg/python:3.9
     steps:
       - checkout
+      - browser-tools/install-browser-tools
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependencies: "robotframework robotframework-seleniumlibrary"
+      - run:
+          name: "Run Tests on Local Chrome"
+          command: |
+            robot -v BROWSER:chrome -d results tests/
 
   test_remote:
     docker:
-      - image: circleci/python:3.8
+      - image: cimg/python:3.9
     steps:
       - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          pip-dependencies: "robotframework robotframework-seleniumlibrary"
       - run:
-          name: Install BrowserStack Local
+          name: "Run Tests on Multiple Remote Browsers"
           command: |
-            wget https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip
+            robot -v BROWSER:chrome -d results tests/
+            robot -v BROWSER:firefox -d results tests/
+            robot -v BROWSER:opera -d results tests/
+            robot -v BROWSER:edge -d results tests/
+            robot -v BROWSER:safari -d results tests/
+
+  store_artifacts:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - store_artifacts:
+          path: /tmp/workspace/results
+          destination: test-reports
+
 workflows:
   version: 2
-  test-workflow:
+  build:
     jobs:
-      - setup
-      - start_selenium
-      - test
+      - test_local
       - test_remote
+      - store_artifacts:
+          requires:
+            - test_local
+            - test_remote
