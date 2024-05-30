@@ -16,6 +16,9 @@ Open Browser With Options
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
 
+    # Specify binary location for Opera
+    Run Keyword If    '${browser}' == 'Opera'    Call Method    ${options}    binary_location    /usr/bin/opera
+
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
