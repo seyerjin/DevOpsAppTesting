@@ -8,13 +8,17 @@ ${URL}        http://sampleapp.tricentis.com/101/app.php
 *** Keywords ***
 Open Browser With Options
     [Arguments]    ${url}    ${browser}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
+    # For Chrome and Opera, use ChromeOptions
+    ${options}=    Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    # For other browsers, use their respective options
+    ${options}=    Run Keyword Unless    '${browser}' in ['Chrome', 'Opera']    Evaluate    sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
+
     Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --no-sandbox
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-dev-shm-usage
     #Run Keyword If    '${browser}' == 'Chrome'    Call Method    ${options}    add_argument    --disable-gpu
     Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Opera'    Call Method    ChromeOptions    add_argument    --headless
+    Run Keyword If    '${browser}' == 'Opera'    Call Method    ${options}    add_argument    --headless
     Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Safari'    Set Variable    ${options}    NONE
     Open Browser    ${url}    ${browser}    options=${options}
