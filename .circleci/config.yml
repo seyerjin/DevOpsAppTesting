@@ -11,6 +11,9 @@ jobs:
       - checkout
       - browser-tools/install-browser-tools
       - run:
+          name: Install necessary system dependencies
+          command: sudo apt-get update && sudo apt-get install -y libasound2 libx11-xcb1
+      - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
       - run:
@@ -23,6 +26,9 @@ jobs:
       - image: cimg/python:3.9
     steps:
       - checkout
+      - run:
+          name: Install necessary system dependencies
+          command: sudo apt-get update && sudo apt-get install -y libasound2 libx11-xcb1
       - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
