@@ -37,10 +37,17 @@ jobs:
       - run:
           name: Install Opera and OperaDriver
           command: |
-            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
+            # Find and download the latest stable version of OperaDriver
+            OPERA_DRIVER_URL=$(curl -s https://api.github.com/repos/operasoftware/operachromiumdriver/releases/latest | grep browser_download_url | grep operadriver_linux64.zip | head -n 1 | cut -d '"' -f 4)
+            echo "Downloading OperaDriver from: $OPERA_DRIVER_URL"
+            wget -q -O operadriver.zip $OPERA_DRIVER_URL
             unzip operadriver.zip -d operadriver
-            sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
-            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/84.0.4316.21/linux/opera-stable_84.0.4316.21_amd64.deb
+            sudo mv operadriver/operadriver /usr/local/bin/
+            # Find and download the latest stable version of Opera
+            OPERA_DEB_URL=$(curl -s https://download3.operacdn.com/pub/opera/desktop/ | grep -oP '(?<=href=")[^"]+(?="/">)' | tail -n 1)
+            OPERA_DEB_FULL_URL="https://download3.operacdn.com/pub/opera/desktop/$OPERA_DEB_URL/linux/opera-stable_${OPERA_DEB_URL}_amd64.deb"
+            echo "Downloading Opera from: $OPERA_DEB_FULL_URL"
+            wget -q -O opera.deb $OPERA_DEB_FULL_URL
             sudo dpkg -i opera.deb || sudo apt-get install -yf
       - run:
           name: Install Edge and Edge WebDriver
@@ -65,10 +72,6 @@ jobs:
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
-            #robot -v BROWSER:Chrome -d results/remote tests/
-            #robot -v BROWSER:Firefox -d results/remote tests/
-            #robot -v BROWSER:Edge -d results/remote tests/
-            #robot -v BROWSER:Opera -d results/remote tests/
             #robot -v BROWSER:Safari -d results/remote tests/
             mkdir -p results/remote
             # Set BrowserStack environment variables
