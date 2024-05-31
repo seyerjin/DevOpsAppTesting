@@ -127,7 +127,7 @@ workflows:
       - test_local
       - test_remote
       #- test_mac
-      - store_artifacts:
-          requires:
-            - test_local
-            - test_remote
+      #- store_artifacts:
+      #    requires:
+      #      - test_local
+      #      - test_remote
