@@ -91,13 +91,13 @@ Select Price Option - Platinum
     Wait Until Element Is Visible    id=selectgold    timeout=5s
 
 Select Price Option - Gold
-    Select Price Option And Validate    gold    500.00    selectgold  # Replace with actual expected value
+    Select Price Option And Validate    gold    334.00    selectgold
     # Return to the previous page
     #Go Back
     Wait Until Element Is Visible    id=selectsilver    timeout=5s
 
 Select Price Option - Silver
-    Select Price Option And Validate    silver    300.00    selectsilver  # Replace with actual expected value
+    Select Price Option And Validate    silver    113.00    selectsilver
     Click Button    id=nextsendquote
 
 *** Test Cases ***
