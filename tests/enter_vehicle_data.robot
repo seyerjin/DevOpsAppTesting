@@ -108,7 +108,7 @@ Send Quote
     Input Text    id=password    Test1324!
     Input Text    id=confirmpassword    Test1324!
     Input Text    id=Comments    Thanks!
-    Wait Until Element Is Visible    id=sendemail    timeout=10s
+    Wait Until Element Is Visible    id=sendemail    timeout=5s
     #Click Button    id=sendemail
     Submit Form And Validate
     [Teardown]    Close Browser
