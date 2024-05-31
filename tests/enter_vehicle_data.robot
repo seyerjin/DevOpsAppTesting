@@ -11,19 +11,18 @@ Open Browser With Options
     # Initialize options based on the browser
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
 
-    # Add headless argument based on the browser
-    Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
-    Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
+    #Add headless argument based on the browser
+    #Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
+    #Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
     #Run Keyword If    '${browser}' == 'Safari'    Call Method    ${options}    add_argument    --headless
-    
+    Call Method    ${options}    add_argument    --headless
     ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
     Open Browser    ${url}    ${actual_browser}    options=${options}
-    #Open Browser    ${url}    ${browser}    options=${options}
 
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
-    #Wait Until Element Is Visible    id=${pricOpts}    timeout=10s
+    Wait Until Element Is Visible    id=${pricOpts}    timeout=5s
     Execute Javascript    document.getElementById('${pricOpts}').click()
     Wait Until Element Is Visible    id=nextsendquote    timeout=5s
     ${displayed_price}=    Get Text    id=select${price_option}_price
@@ -37,7 +36,6 @@ Submit Form And Validate
 *** Test Cases ***
 Enter Vehicle Data
     Open Browser With Options    ${URL}    ${BROWSER}
-    #Open Browser    ${URL}    ${BROWSER}
     Select From List By Label    id=make    Volkswagen
     Select From List By Label    id=model    Scooter
     Input Text    id=cylindercapacity    2000
@@ -86,14 +84,10 @@ Enter Product Data
 *** Test Cases ***
 Select Price Option - Platinum
     Select Price Option And Validate    platinum    655.00    selectplatinum
-    # Return to the previous page
-    #Go Back
     Wait Until Element Is Visible    id=selectgold    timeout=5s
 
 Select Price Option - Gold
     Select Price Option And Validate    gold    334.00    selectgold
-    # Return to the previous page
-    #Go Back
     Wait Until Element Is Visible    id=selectsilver    timeout=5s
 
 Select Price Option - Silver
@@ -108,7 +102,5 @@ Send Quote
     Input Text    id=password    Test1324!
     Input Text    id=confirmpassword    Test1324!
     Input Text    id=Comments    Thanks!
-    Wait Until Element Is Visible    id=sendemail    timeout=5s
-    #Click Button    id=sendemail
     Submit Form And Validate
     [Teardown]    Close Browser
