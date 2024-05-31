@@ -22,68 +22,58 @@ jobs:
             mkdir -p results/local
             robot -v BROWSER:Chrome -d results/local tests/
       - store_artifacts:
-          path: results/local
-          destination: test-reports/local
+          path: results/local/chrome
+          destination: test-reports/local/chrome
 
   test_remote:
     docker:
       - image: cimg/python:3.9
     steps:
       - checkout
-      - browser-tools/install-browser-tools
-      - run:
-          name: Install necessary system dependencies for browsers
-          command: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxt6 libasound2
-      - run:
-          name: Install Opera and OperaDriver
-          command: |
-            wget -q -O operadriver.zip https://github.com/operasoftware/operachromiumdriver/releases/download/v.104.0.5112.81/operadriver_linux64.zip
-            unzip operadriver.zip -d operadriver
-            sudo mv operadriver/operadriver_linux64/operadriver /usr/local/bin/
-            wget -q -O opera.deb https://download3.operacdn.com/pub/opera/desktop/84.0.4316.21/linux/opera-stable_84.0.4316.21_amd64.deb
-            sudo dpkg -i opera.deb || sudo apt-get install -yf
-      - run:
-          name: Install Edge and Edge WebDriver
-          command: |
-            # Install dependencies
-            sudo apt-get update && sudo apt-get install -y curl jq
-            # Download and install the latest stable version of Microsoft Edge
-            EDGE_DEB_URL=$(curl -s https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/ | grep -oP 'href="\K[^"]+' | grep -E 'amd64\.deb$' | sort -V | tail -n 1 | xargs -I{} echo "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/{}")
-            echo "Downloading Microsoft Edge from: $EDGE_DEB_URL"
-            wget -q -O edge.deb $EDGE_DEB_URL
-            sudo dpkg -i edge.deb || sudo apt-get install -yf
-            # Fetch the latest Edge WebDriver version dynamically and clean up the version string
-            LATEST_EDGE_DRIVER_VERSION=$(curl -s https://msedgedriver.azureedge.net/LATEST_STABLE | tr -d '\r' | tr -d '\n' | tr -d '\377\376')
-            LATEST_EDGE_DRIVER_URL="https://msedgedriver.azureedge.net/${LATEST_EDGE_DRIVER_VERSION}/edgedriver_linux64.zip"
-            echo "Downloading Edge WebDriver from: $LATEST_EDGE_DRIVER_URL"
-            wget -q -O edgedriver.zip $LATEST_EDGE_DRIVER_URL
-            unzip edgedriver.zip -d edgedriver
-            sudo mv edgedriver/msedgedriver /usr/local/bin/
       - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
       - run:
-          name: "Run Tests on Multiple Remote Browsers"
+          name: "Run Tests on BrowserStack Remote Browsers - Chrome"
           command: |
-            #robot -v BROWSER:Chrome -d results/remote tests/
-            #robot -v BROWSER:Firefox -d results/remote tests/
-            #robot -v BROWSER:Edge -d results/remote tests/
-            #robot -v BROWSER:Opera -d results/remote tests/
-            #robot -v BROWSER:Safari -d results/remote tests/
-            mkdir -p results/remote
-            # Set BrowserStack environment variables
+            mkdir -p results/remote/chrome
             export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
             export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
-            # Run tests on BrowserStack remote browsers
-            robot -v BROWSER:Chrome -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
-            robot -v BROWSER:Firefox -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
-            robot -v BROWSER:Edge -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
-            robot -v BROWSER:Opera -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
-            # Example for Safari on BrowserStack
-            # robot -v BROWSER:Safari -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/   
+            robot -v BROWSER:Chrome -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/chrome tests/
       - store_artifacts:
-          path: results/remote
-          destination: test-reports
+          path: results/remote/chrome
+          destination: test-reports/remote/chrome
+      - run:
+          name: "Run Tests on BrowserStack Remote Browsers - Firefox"
+          command: |
+            mkdir -p results/remote/firefox
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            robot -v BROWSER:Firefox -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/firefox tests/
+      - store_artifacts:
+          path: results/remote/firefox
+          destination: test-reports/remote/firefox
+      - run:
+          name: "Run Tests on BrowserStack Remote Browsers - Edge"
+          command: |
+            mkdir -p results/remote/edge
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            robot -v BROWSER:Edge -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/edge tests/
+      - store_artifacts:
+          path: results/remote/edge
+          destination: test-reports/remote/edge
+      - run:
+          name: "Run Tests on BrowserStack Remote Browsers - Opera"
+          command: |
+            mkdir -p results/remote/opera
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            robot -v BROWSER:Opera -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/opera tests/
+      - store_artifacts:
+          path: results/remote/opera
+          destination: test-reports/remote/opera
+
   test_mac:
     macos:
       xcode: "12.5.1"
