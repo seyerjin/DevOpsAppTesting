@@ -109,16 +109,16 @@ jobs:
           path: results/safari
           destination: test-reports
 
-  store_artifacts:
-    docker:
-      - image: cimg/python:3.9
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp/workspace
-      - store_artifacts:
-          path: results
-          destination: test-reports
+#  store_artifacts:
+#    docker:
+#      - image: cimg/python:3.9
+#    steps:
+#      - checkout
+#      - attach_workspace:
+#          at: /tmp/workspace
+#      - store_artifacts:
+#          path: results
+#          destination: test-reports
 
 workflows:
   version: 2
