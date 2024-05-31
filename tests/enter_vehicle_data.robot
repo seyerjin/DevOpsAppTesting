@@ -22,10 +22,13 @@ Open Browser With Options
     #Open Browser    ${url}    ${browser}    options=${options}
 
 Select Price Option And Validate
-    [Arguments]    ${price_option}
-    Execute Javascript    document.getElementById('select${price_option}').click()
-    ${price_per_year}=    Get Text    xpath=//table[@id='priceTable']//td[contains(text(), 'Price per Year')]/following-sibling::td[contains(text(), '${price_option}')]
-    Log    Price Per Year for ${price_option}: ${price_per_year}
+    [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
+    #Wait Until Element Is Visible    id=${pricOpts}    timeout=10s
+    Execute Javascript    document.getElementById('${pricOpts}').click()
+    Wait Until Element Is Visible    id=nextsendquote    timeout=5s
+    ${displayed_price}=    Get Text    id=select${price_option}_price
+    Log    Displayed Price for ${price_option}: ${displayed_price}
+    Should Be Equal As Numbers    ${displayed_price}    ${expected_price}
 
 Submit Form And Validate
     Click Button    id=sendemail
@@ -81,16 +84,20 @@ Enter Product Data
     Click Button    id=nextselectpriceoption   
     
 *** Test Cases ***
-Select Price Option
-    Execute Javascript    document.getElementById('selectplatinum').click()
-    Wait Until Element Is Visible    id=nextsendquote    timeout=5s
-    # Extract the displayed price for Platinum
-    ${displayed_price}=    Get Text    id=selectplatinum_price
-    Log    Displayed Price: ${displayed_price}
-    # Define the expected price based on your calculation
-    ${expected_price}=    Set Variable    655.00  # Replace with the actual expected value
-    # Verify the price
-    Should Be Equal As Numbers    ${displayed_price}    ${expected_price}
+Select Price Option - Platinum
+    Select Price Option And Validate    platinum    655.00    selectplatinum
+    # Return to the previous page
+    #Go Back
+    Wait Until Element Is Visible    id=selectgold    timeout=5s
+
+Select Price Option - Gold
+    Select Price Option And Validate    gold    500.00    selectgold  # Replace with actual expected value
+    # Return to the previous page
+    #Go Back
+    Wait Until Element Is Visible    id=selectsilver    timeout=5s
+
+Select Price Option - Silver
+    Select Price Option And Validate    silver    300.00    selectsilver  # Replace with actual expected value
     Click Button    id=nextsendquote
 
 *** Test Cases ***
