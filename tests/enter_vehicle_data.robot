@@ -12,14 +12,10 @@ Open Browser With Options
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
 
     #Add headless argument based on the browser
-    #Run Keyword If    '${browser}' in ['Chrome', 'Opera']    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Firefox'    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Edge'    Call Method    ${options}    add_argument    --headless
-    #Run Keyword If    '${browser}' == 'Safari'    Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --headless
-    ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
-    Open Browser    ${url}    ${actual_browser}    options=${options}
-
+    #${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
+    #Open Browser    ${url}    ${actual_browser}    options=${options}
+    Open Browser    ${url}    ${browser}    options=${options}
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
     Wait Until Element Is Visible    id=${pricOpts}    timeout=5s
@@ -52,7 +48,6 @@ Enter Vehicle Data
     Input Text    id=licenseplatenumber    BTTF1.21GW
     Input Text    id=annualmileage    21000
     Click Button    id=nextenterinsurantdata  # Updated button selector
-    #[Teardown]    Close Browser
 
 *** Test Cases ***
 Enter Insurant Data
