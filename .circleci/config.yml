@@ -65,11 +65,22 @@ jobs:
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
-            robot -v BROWSER:Chrome -d results/remote tests/
-            robot -v BROWSER:Firefox -d results/remote tests/
-            robot -v BROWSER:Edge -d results/remote tests/
-            robot -v BROWSER:Opera -d results/remote tests/
+            #robot -v BROWSER:Chrome -d results/remote tests/
+            #robot -v BROWSER:Firefox -d results/remote tests/
+            #robot -v BROWSER:Edge -d results/remote tests/
+            #robot -v BROWSER:Opera -d results/remote tests/
             #robot -v BROWSER:Safari -d results/remote tests/
+            mkdir -p results/remote
+            # Set BrowserStack environment variables
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            # Run tests on BrowserStack remote browsers
+            robot -v BROWSER:Chrome -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
+            robot -v BROWSER:Firefox -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
+            robot -v BROWSER:Edge -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
+            robot -v BROWSER:Opera -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/
+            # Example for Safari on BrowserStack
+            # robot -v BROWSER:Safari -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote tests/   
       - store_artifacts:
           path: results/remote
           destination: test-reports
