@@ -1,9 +1,11 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    OperatingSystem
 
 *** Variables ***
 ${BROWSER}    Chrome
 ${URL}        https://sampleapp.tricentis.com/101/app.php
+${IMAGE_PATH}    C:\\Temp\\asdf.txt
 
 *** Keywords ***
 Open Browser With Options
@@ -13,9 +15,9 @@ Open Browser With Options
 
     #Add headless argument based on the browser
     Call Method    ${options}    add_argument    --headless
-    #${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
-    #Open Browser    ${url}    ${actual_browser}    options=${options}
-    Open Browser    ${url}    ${browser}    options=${options}
+    ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
+    Open Browser    ${url}    ${actual_browser}    options=${options}
+
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
     Wait Until Element Is Visible    id=${pricOpts}    timeout=5s
@@ -63,8 +65,12 @@ Enter Insurant Data
     Execute Javascript    document.getElementById('cliffdiving').click()
     Execute Javascript    document.getElementById('bungeejumping').click()
     Input Text    id=website    https://www.backtothefuture.com/
-    Input Text    id=picture    .\tests\car.webp
-    Click Button    id=nextenterproductdata    
+    #Click Element    id=open
+    #Choose File    #picturecontainer    ${IMAGE_PATH}
+    #${filename}=    Get Filename From Path    ${IMAGE_PATH}
+    Input Text    id=picture    ${IMAGE_PATH}
+    Click Button    id=nextenterproductdata
+    #[Teardown]    Close Browser
 
 *** Test Cases ***
 Enter Product Data
