@@ -85,7 +85,26 @@ Enter Product Data
     Select From List By Label    id=courtesycar    Yes
     Click Button    id=nextselectpriceoption
 
+
 *** Test Cases ***
+Complete Insurance Process For Silver
+    Open Browser With Options    ${URL}    ${BROWSER}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
+    Select Price Option And Validate    silver    113.00    selectsilver
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
+Complete Insurance Process For Gold
+    Open Browser With Options    ${URL}    ${BROWSER}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
+    Select Price Option And Validate    gold    334.00    selectgold
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
 Complete Insurance Process For Platinum
     Open Browser With Options    ${URL}    ${BROWSER}
     Enter Vehicle Data
@@ -96,22 +115,12 @@ Complete Insurance Process For Platinum
     Fill Quote Form
     [Teardown]    Close Browser
 
-Complete Insurance Process For Gold
+Complete Insurance Process For Ultimate
     Open Browser With Options    ${URL}    ${BROWSER}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
-    Select Price Option And Validate    gold    334.00    selectgold
-    Click Button    id=nextsendquote
-    Fill Quote Form
-    [Teardown]    Close Browser
-
-Complete Insurance Process For Silver
-    Open Browser With Options    ${URL}    ${BROWSER}
-    Enter Vehicle Data
-    Enter Insurant Data
-    Enter Product Data
-    Select Price Option And Validate    silver    113.00    selectsilver
+    Select Price Option And Validate    platinum    1248.00    selectultimate
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
