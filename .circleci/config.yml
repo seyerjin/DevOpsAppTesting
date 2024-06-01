@@ -30,7 +30,7 @@ jobs:
       - image: cimg/python:3.9
     steps:
       - checkout
-      - browser-tools/install-browser-tools
+      #- browser-tools/install-browser-tools
       - run:
           name: Install Robot Framework and SeleniumLibrary
           command: pip install robotframework robotframework-seleniumlibrary
