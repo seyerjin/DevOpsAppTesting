@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-Library    OperatingSystem
+Library    BuiltIn
 
 *** Variables ***
 ${BROWSER}    Chrome
@@ -25,7 +25,8 @@ Select Price Option And Validate
     Wait Until Element Is Visible    id=nextsendquote    timeout=5s
     ${displayed_price}=    Get Text    id=select${price_option}_price
     Log    Displayed Price for ${price_option}: ${displayed_price}
-    Should Be Equal As Numbers    ${displayed_price}    ${expected_price}
+    ${converted_price}=    Evaluate    float("${displayed_price}".replace(',', ''))
+    Should Be Equal As Numbers    ${converted_price}    ${expected_price}
 
 Submit Form And Validate
     Click Button    id=sendemail
@@ -120,7 +121,7 @@ Complete Insurance Process For Ultimate
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
-    Select Price Option And Validate    Ultimate    1248.00    selectultimate
+    Select Price Option And Validate    ultimate    1248.00    selectultimate
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
