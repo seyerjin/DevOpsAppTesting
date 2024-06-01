@@ -13,7 +13,7 @@ Open Browser With Options
     # Initialize options based on the browser
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
 
-    #Add headless argument based on the browser
+    # Add headless argument based on the browser
     Call Method    ${options}    add_argument    --headless
     ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
     Open Browser    ${url}    ${actual_browser}    options=${options}
@@ -31,9 +31,17 @@ Submit Form And Validate
     Click Button    id=sendemail
     Wait Until Page Contains    Sending e-mail success!    timeout=10s
 
-*** Test Cases ***
+Fill Quote Form
+    Input Text    id=email    test@test.me
+    Input Text    id=phone    12345678
+    Input Text    id=username    MartyMcFly68
+    Input Text    id=password    Test1324!
+    Input Text    id=confirmpassword    Test1324!
+    Input Text    id=Comments    Thanks!
+    Submit Form And Validate
+
 Enter Vehicle Data
-    Open Browser With Options    ${URL}    ${BROWSER}
+    [Arguments]    
     Select From List By Label    id=make    Volkswagen
     Select From List By Label    id=model    Scooter
     Input Text    id=cylindercapacity    2000
@@ -42,17 +50,16 @@ Enter Vehicle Data
     Select From List By Label    id=numberofseats    5
     Select From List By Label    id=fuel    Diesel
     Execute Javascript    document.getElementById('righthanddriveno').click()
-    #Click Element    css=span.ideal-radio
     Select From List By Label    id=numberofseatsmotorcycle    3
     Input Text    id=payload    500
     Input Text    id=totalweight    2000
     Input Text    id=listprice    50000
     Input Text    id=licenseplatenumber    BTTF1.21GW
     Input Text    id=annualmileage    21000
-    Click Button    id=nextenterinsurantdata  # Updated button selector
+    Click Button    id=nextenterinsurantdata
 
-*** Test Cases ***
 Enter Insurant Data
+    [Arguments]    
     Input Text    id=firstname     Marty
     Input Text    id=lastname      McFly
     Input Text    id=birthdate    01/01/1968
@@ -65,43 +72,46 @@ Enter Insurant Data
     Execute Javascript    document.getElementById('cliffdiving').click()
     Execute Javascript    document.getElementById('bungeejumping').click()
     Input Text    id=website    https://www.backtothefuture.com/
-    #Click Element    id=open
-    #Choose File    #picturecontainer    ${IMAGE_PATH}
-    #${filename}=    Get Filename From Path    ${IMAGE_PATH}
     Input Text    id=picture    ${IMAGE_PATH}
     Click Button    id=nextenterproductdata
-    #[Teardown]    Close Browser
 
-*** Test Cases ***
 Enter Product Data
+    [Arguments]    
     Input Text    id=startdate    12/01/2024
     Select From List By Label    id=insurancesum    10.000.000,00
     Select From List By Label    id=meritrating    Bonus 9
     Select From List By Label    id=damageinsurance    Full Coverage
     Execute Javascript    document.getElementById('EuroProtection').click()
     Select From List By Label    id=courtesycar    Yes
-    Click Button    id=nextselectpriceoption   
-    
+    Click Button    id=nextselectpriceoption
+
 *** Test Cases ***
-Select Price Option - Platinum
+Complete Insurance Process For Platinum
+    Open Browser With Options    ${URL}    ${BROWSER}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
     Select Price Option And Validate    platinum    655.00    selectplatinum
-    Wait Until Element Is Visible    id=selectgold    timeout=5s
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
 
-Select Price Option - Gold
+Complete Insurance Process For Gold
+    Open Browser With Options    ${URL}    ${BROWSER}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
     Select Price Option And Validate    gold    334.00    selectgold
-    Wait Until Element Is Visible    id=selectsilver    timeout=5s
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
 
-Select Price Option - Silver
+Complete Insurance Process For Silver
+    Open Browser With Options    ${URL}    ${BROWSER}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
     Select Price Option And Validate    silver    113.00    selectsilver
     Click Button    id=nextsendquote
-
-*** Test Cases ***
-Send Quote
-    Input Text    id=email    test@test.me
-    Input Text    id=phone    12345678
-    Input Text    id=username    MartyMcFly68
-    Input Text    id=password    Test1324!
-    Input Text    id=confirmpassword    Test1324!
-    Input Text    id=Comments    Thanks!
-    Submit Form And Validate
+    Fill Quote Form
     [Teardown]    Close Browser
