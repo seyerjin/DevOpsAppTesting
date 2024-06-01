@@ -19,11 +19,11 @@ jobs:
       - run:
           name: "Run Tests on Local Chrome"
           command: |
-            mkdir -p results/local
-            robot -v BROWSER:Chrome -d results/local tests/
+            mkdir -p results/local/
+            robot -v BROWSER:Chrome -d results/local/chrome/
       - store_artifacts:
-          path: results/local/chrome
-          destination: test-reports/local/chrome
+          path: results/local/
+          destination: test-reports
 
   test_remote:
     docker:
