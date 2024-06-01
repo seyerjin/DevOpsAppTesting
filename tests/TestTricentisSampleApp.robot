@@ -74,8 +74,8 @@ Enter Insurant Data
     Execute Javascript    document.getElementById('cliffdiving').click()
     Execute Javascript    document.getElementById('bungeejumping').click()
     Input Text    id=website    https://www.backtothefuture.com/
-    Click Button    id=open
-    Choose File    xpath=//input[@type="file"]    ${FILE_PATH}
+    #Click Button    id=open
+    #Choose File    xpath=//input[@type="file"]    ${FILE_PATH}
     Input Text    id=picture    ${FILE_NAME}
     Click Button    id=nextenterproductdata
 
