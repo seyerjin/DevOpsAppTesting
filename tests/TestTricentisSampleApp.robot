@@ -120,7 +120,7 @@ Complete Insurance Process For Ultimate
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
-    Select Price Option And Validate    platinum    1248.00    selectultimate
+    Select Price Option And Validate    Ultimate    1248.00    selectultimate
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
