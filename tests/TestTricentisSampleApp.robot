@@ -41,6 +41,11 @@ Set Remote Options
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${options}    add_argument    --disable-application-cache'
+    Call Method    ${options}    add_argument    --disable-setuid-sandbox
+    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${options}    add_argument    --disable-gpu
+    Call Method    ${options}    add_argument    --start-maximized
     Call Method    ${options}    set_capability    platform    ${platform}
     Call Method    ${options}    set_capability    browserVersion    ${browser_version}
     Call Method    ${options}    set_capability    browserName    ${browser}
