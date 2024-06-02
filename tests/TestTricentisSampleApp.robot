@@ -34,7 +34,7 @@ Add Opera Options
     Call Method    ${options}    add_experimental_option    w3c    True
 
 Set Remote Options
-    [Arguments]    ${browser}    ${platform}    ${browser_version}
+    [Arguments]    ${browser}    ${browser_version}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    set_capability    platform    ${platform}
@@ -111,7 +111,7 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
