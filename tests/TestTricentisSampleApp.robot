@@ -14,7 +14,7 @@ ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${browser}=${browserName}    ${PLATFORM}=${platform}    ${BROWSER_VERSION}=${browser_version}    ${REMOTE_URL}=${remote_url}    ${RUN_REMOTE}=${run_remote}
+    [Arguments]    ${url}    ${browserName}=${browser}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
     Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browser}    ${platform}    ${browser_version}
     Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browser}    options=${OPTIONS}    remote_url=${remote_url}
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
