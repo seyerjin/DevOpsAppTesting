@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0 (Python 3.12.3 on win32)" generated="2024-06-02T11:53:06.148396" rpa="false" schemaversion="5">
+<suite id="s1" name="Tests" source="C:\ProtonDrive\My files\Cloudy\FH Burgenland\Master\2. Semester\DevOps PT\Kevin\AppTesting\tests">
+<suite id="s1-s1" name="TestTricentisSampleApp" source="C:\ProtonDrive\My files\Cloudy\FH Burgenland\Master\2. Semester\DevOps PT\Kevin\AppTesting\tests\TestTricentisSampleApp.robot">
+<test id="s1-s1-t1" name="Complete Insurance Process For Silver" line="106">
+<kw name="Open Browser With Options">
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${run_remote}'=='True'</arg>
+<arg>Set Remote Options</arg>
+<arg>${browser}</arg>
+<arg>${platform}</arg>
+<arg>${browser_version}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.280529" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${run_remote}'=='True'</arg>
+<arg>Open Browser</arg>
+<arg>${url}</arg>
+<arg>${browser}</arg>
+<arg>options=${OPTIONS}</arg>
+<arg>remote_url=${remote_url}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.280529" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Open Local Browser With Options">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2024-06-02T11:53:06.281525" level="INFO">${options} = &lt;selenium.webdriver.chrome.options.Options object at 0x000001D1F11DD370&gt;</msg>
+<var>${options}</var>
+<arg>sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.281525" elapsed="0.000000"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--headless</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.281525" elapsed="0.000000"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--no-sandbox</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.281525" elapsed="0.000000"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-dev-shm-usage</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.281525" elapsed="0.000000"/>
+</kw>
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:06.281525" level="INFO">Opening browser 'Chrome' to base url 'https://sampleapp.tricentis.com/101/app.php'.</msg>
+<arg>${url}</arg>
+<arg>${browser}</arg>
+<arg>options=${options}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.281525" elapsed="6.482633"/>
+</kw>
+<arg>${url}</arg>
+<arg>${browser}</arg>
+<status status="PASS" start="2024-06-02T11:53:06.280529" elapsed="6.483629"/>
+</kw>
+<arg>'${run_remote}'=='False'</arg>
+<arg>Open Local Browser With Options</arg>
+<arg>${url}</arg>
+<arg>${browser}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2024-06-02T11:53:06.280529" elapsed="6.483629"/>
+</kw>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<arg>${PLATFORM}</arg>
+<arg>${BROWSER_VERSION}</arg>
+<arg>${REMOTE_URL}</arg>
+<arg>${RUN_REMOTE}</arg>
+<status status="PASS" start="2024-06-02T11:53:06.279511" elapsed="6.484647"/>
+</kw>
+<kw name="Enter Vehicle Data">
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:12.765165" level="INFO">Selecting options from selection list 'id=make' by label Volkswagen.</msg>
+<arg>id=make</arg>
+<arg>Volkswagen</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:12.764158" elapsed="0.056353"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:12.821547" level="INFO">Selecting options from selection list 'id=model' by label Scooter.</msg>
+<arg>id=model</arg>
+<arg>Scooter</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:12.821547" elapsed="0.046748"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:12.868295" level="INFO">Typing text '2000' into text field 'id=cylindercapacity'.</msg>
+<arg>id=cylindercapacity</arg>
+<arg>2000</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:12.868295" elapsed="0.068183"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:12.937680" level="INFO">Typing text '80' into text field 'id=engineperformance'.</msg>
+<arg>id=engineperformance</arg>
+<arg>80</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:12.937680" elapsed="0.054721"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:12.992401" level="INFO">Typing text '01/01/2024' into text field 'id=dateofmanufacture'.</msg>
+<arg>id=dateofmanufacture</arg>
+<arg>01/01/2024</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:12.992401" elapsed="0.071864"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.064265" level="INFO">Selecting options from selection list 'id=numberofseats' by label 5.</msg>
+<arg>id=numberofseats</arg>
+<arg>5</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.064265" elapsed="0.042905"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.107170" level="INFO">Selecting options from selection list 'id=fuel' by label Diesel.</msg>
+<arg>id=fuel</arg>
+<arg>Diesel</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.107170" elapsed="0.050445"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.157615" level="INFO">Executing JavaScript:
+document.getElementById('righthanddriveno').click()
+Without any arguments.</msg>
+<arg>document.getElementById('righthanddriveno').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.157615" elapsed="0.003747"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.162525" level="INFO">Selecting options from selection list 'id=numberofseatsmotorcycle' by label 3.</msg>
+<arg>id=numberofseatsmotorcycle</arg>
+<arg>3</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.161362" elapsed="0.045894"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.207256" level="INFO">Typing text '500' into text field 'id=payload'.</msg>
+<arg>id=payload</arg>
+<arg>500</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.207256" elapsed="0.053739"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.262096" level="INFO">Typing text '2000' into text field 'id=totalweight'.</msg>
+<arg>id=totalweight</arg>
+<arg>2000</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.262096" elapsed="0.053029"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.315125" level="INFO">Typing text '50000' into text field 'id=listprice'.</msg>
+<arg>id=listprice</arg>
+<arg>50000</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.315125" elapsed="0.054771"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.369896" level="INFO">Typing text 'BTTF1.21GW' into text field 'id=licenseplatenumber'.</msg>
+<arg>id=licenseplatenumber</arg>
+<arg>BTTF1.21GW</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.369896" elapsed="0.068054"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.437950" level="INFO">Typing text '21000' into text field 'id=annualmileage'.</msg>
+<arg>id=annualmileage</arg>
+<arg>21000</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.437950" elapsed="0.055093"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.494436" level="INFO">Clicking button 'id=nextenterinsurantdata'.</msg>
+<arg>id=nextenterinsurantdata</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.494436" elapsed="0.048022"/>
+</kw>
+<status status="PASS" start="2024-06-02T11:53:12.764158" elapsed="0.779773"/>
+</kw>
+<kw name="Enter Insurant Data">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.543931" level="INFO">Typing text 'Marty' into text field 'id=firstname'.</msg>
+<arg>id=firstname</arg>
+<arg>Marty</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.543931" elapsed="0.064440"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.609792" level="INFO">Typing text 'McFly' into text field 'id=lastname'.</msg>
+<arg>id=lastname</arg>
+<arg>McFly</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.609792" elapsed="0.056118"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.666909" level="INFO">Typing text '01/01/1968' into text field 'id=birthdate'.</msg>
+<arg>id=birthdate</arg>
+<arg>01/01/1968</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.666909" elapsed="0.074416"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.741325" level="INFO">Executing JavaScript:
+document.getElementById('gendermale').click()
+Without any arguments.</msg>
+<arg>document.getElementById('gendermale').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.741325" elapsed="0.004047"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.746374" level="INFO">Typing text 'Roslyndale Avenue 1' into text field 'id=streetaddress'.</msg>
+<arg>id=streetaddress</arg>
+<arg>Roslyndale Avenue 1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.745372" elapsed="0.068863"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.814235" level="INFO">Selecting options from selection list 'id=country' by label United States.</msg>
+<arg>id=country</arg>
+<arg>United States</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.814235" elapsed="0.044186"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.858421" level="INFO">Typing text '9303' into text field 'id=zipcode'.</msg>
+<arg>id=zipcode</arg>
+<arg>9303</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.858421" elapsed="0.061668"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.920089" level="INFO">Typing text 'Hill Valley' into text field 'id=city'.</msg>
+<arg>id=city</arg>
+<arg>Hill Valley</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.920089" elapsed="0.054305"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:13.974394" level="INFO">Selecting options from selection list 'id=occupation' by label Employee.</msg>
+<arg>id=occupation</arg>
+<arg>Employee</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:13.974394" elapsed="0.047966"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.022360" level="INFO">Executing JavaScript:
+document.getElementById('cliffdiving').click()
+Without any arguments.</msg>
+<arg>document.getElementById('cliffdiving').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.022360" elapsed="0.005954"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.029503" level="INFO">Executing JavaScript:
+document.getElementById('bungeejumping').click()
+Without any arguments.</msg>
+<arg>document.getElementById('bungeejumping').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.028314" elapsed="0.005513"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.033827" level="INFO">Typing text 'https://www.backtothefuture.com/' into text field 'id=website'.</msg>
+<arg>id=website</arg>
+<arg>https://www.backtothefuture.com/</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.033827" elapsed="0.081330"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.115157" level="INFO">Clicking button 'id=nextenterproductdata'.</msg>
+<arg>id=nextenterproductdata</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.115157" elapsed="0.047413"/>
+</kw>
+<status status="PASS" start="2024-06-02T11:53:13.543931" elapsed="0.618639"/>
+</kw>
+<kw name="Enter Product Data">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.163825" level="INFO">Typing text '12/01/2024' into text field 'id=startdate'.</msg>
+<arg>id=startdate</arg>
+<arg>12/01/2024</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.163825" elapsed="0.075090"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.238915" level="INFO">Selecting options from selection list 'id=insurancesum' by label 10.000.000,00.</msg>
+<arg>id=insurancesum</arg>
+<arg>10.000.000,00</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.238915" elapsed="0.047077"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.285992" level="INFO">Selecting options from selection list 'id=meritrating' by label Bonus 9.</msg>
+<arg>id=meritrating</arg>
+<arg>Bonus 9</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.285992" elapsed="0.049180"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.336175" level="INFO">Selecting options from selection list 'id=damageinsurance' by label Full Coverage.</msg>
+<arg>id=damageinsurance</arg>
+<arg>Full Coverage</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.336175" elapsed="0.045039"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.381214" level="INFO">Executing JavaScript:
+document.getElementById('EuroProtection').click()
+Without any arguments.</msg>
+<arg>document.getElementById('EuroProtection').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.381214" elapsed="0.006996"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.388210" level="INFO">Selecting options from selection list 'id=courtesycar' by label Yes.</msg>
+<arg>id=courtesycar</arg>
+<arg>Yes</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.388210" elapsed="0.045115"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.434339" level="INFO">Clicking button 'id=nextselectpriceoption'.</msg>
+<arg>id=nextselectpriceoption</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.434339" elapsed="0.052559"/>
+</kw>
+<status status="PASS" start="2024-06-02T11:53:14.162570" elapsed="0.324328"/>
+</kw>
+<kw name="Select Price Option And Validate">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=${pricOpts}</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.486898" elapsed="0.014515"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:14.502415" level="INFO">Executing JavaScript:
+document.getElementById('selectsilver').click()
+Without any arguments.</msg>
+<arg>document.getElementById('${pricOpts}').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.502415" elapsed="0.005999"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=nextsendquote</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-06-02T11:53:14.508414" elapsed="0.856283"/>
+</kw>
+<kw name="Get Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.380962" level="INFO">${displayed_price} = 113.00</msg>
+<var>${displayed_price}</var>
+<arg>id=select${price_option}_price</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.364697" elapsed="0.016265"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2024-06-02T11:53:15.380962" level="INFO">Displayed Price for silver: 113.00</msg>
+<arg>Displayed Price for ${price_option}: ${displayed_price}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.380962" elapsed="0.000000"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2024-06-02T11:53:15.380962" level="INFO">${converted_price} = 113.0</msg>
+<var>${converted_price}</var>
+<arg>float("${displayed_price}".replace(',', ''))</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.380962" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Numbers" owner="BuiltIn">
+<msg time="2024-06-02T11:53:15.380962" level="INFO">Argument types are:
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${converted_price}</arg>
+<arg>${expected_price}</arg>
+<doc>Fails if objects are unequal after converting them to real numbers.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.380962" elapsed="0.000000"/>
+</kw>
+<arg>silver</arg>
+<arg>113.00</arg>
+<arg>selectsilver</arg>
+<status status="PASS" start="2024-06-02T11:53:14.486898" elapsed="0.894064"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.380962" level="INFO">Clicking button 'id=nextsendquote'.</msg>
+<arg>id=nextsendquote</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.380962" elapsed="0.043491"/>
+</kw>
+<kw name="Fill Quote Form">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.425706" level="INFO">Typing text 'test@test.me' into text field 'id=email'.</msg>
+<arg>id=email</arg>
+<arg>test@test.me</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.424453" elapsed="0.074525"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.498978" level="INFO">Typing text '12345678' into text field 'id=phone'.</msg>
+<arg>id=phone</arg>
+<arg>12345678</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.498978" elapsed="0.061924"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.562308" level="INFO">Typing text 'MartyMcFly68' into text field 'id=username'.</msg>
+<arg>id=username</arg>
+<arg>MartyMcFly68</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.560902" elapsed="0.063634"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.624536" level="INFO">Typing text 'Test1324!' into text field 'id=password'.</msg>
+<arg>id=password</arg>
+<arg>Test1324!</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.624536" elapsed="0.062715"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.687251" level="INFO">Typing text 'Test1324!' into text field 'id=confirmpassword'.</msg>
+<arg>id=confirmpassword</arg>
+<arg>Test1324!</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.687251" elapsed="0.064941"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.753441" level="INFO">Typing text 'Thanks!' into text field 'id=Comments'.</msg>
+<arg>id=Comments</arg>
+<arg>Thanks!</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.753441" elapsed="0.057983"/>
+</kw>
+<kw name="Submit Form And Validate">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:15.812422" level="INFO">Clicking button 'id=sendemail'.</msg>
+<arg>id=sendemail</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-06-02T11:53:15.812422" elapsed="0.046193"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<msg time="2024-06-02T11:53:23.177026" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Eine vorhandene Verbindung wurde vom Remotehost geschlossen', None, 10054, None)': /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot</msg>
+<msg time="2024-06-02T11:53:27.222658" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F140B830&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot</msg>
+<msg time="2024-06-02T11:53:31.273717" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13AFF80&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot</msg>
+<msg time="2024-06-02T11:53:35.334884" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=60278): Max retries exceeded with url: /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13AF260&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte'))</msg>
+<arg>Sending e-mail success!</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="FAIL" start="2024-06-02T11:53:15.858615" elapsed="19.477271">Execution terminated by signal</status>
+</kw>
+<status status="FAIL" start="2024-06-02T11:53:15.811424" elapsed="19.524462">Execution terminated by signal</status>
+</kw>
+<status status="FAIL" start="2024-06-02T11:53:15.424453" elapsed="19.911433">Execution terminated by signal</status>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<msg time="2024-06-02T11:53:39.385911" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13E5DF0&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9</msg>
+<msg time="2024-06-02T11:53:43.442189" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13E6570&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9</msg>
+<errors>
+<msg time="2024-06-02T11:53:23.177026" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'Eine vorhandene Verbindung wurde vom Remotehost geschlossen', None, 10054, None)': /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot</msg>
+<msg time="2024-06-02T11:53:27.222658" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F140B830&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot</msg>
+<msg time="2024-06-02T11:53:31.273717" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13AFF80&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot</msg>
+<msg time="2024-06-02T11:53:35.334884" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=60278): Max retries exceeded with url: /session/6a0cc3f9e78fc035767aacdbec36dab9/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13AF260&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte'))</msg>
+<msg time="2024-06-02T11:53:39.385911" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13E5DF0&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9</msg>
+<msg time="2024-06-02T11:53:43.442189" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x000001D1F13E6570&gt;: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte')': /session/6a0cc3f9e78fc035767aacdbec36dab9</msg>
+<msg time="2024-06-02T11:53:47.481723" level="ERROR">Execution stopped by user.</msg>
+</errors>
+</robot>

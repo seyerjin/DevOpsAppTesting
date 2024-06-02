@@ -1,64 +1,166 @@
 version: 2.1
 
-executors:
-  python-executor:
-    docker:
-      - image: circleci/python:3.8
-    working_directory: ~/repo
+orbs:
+  browser-tools: circleci/browser-tools@1.4.8
 
 jobs:
-  setup:
-    executor: python-executor
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y unzip wget
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-            sudo apt-get update
-            sudo apt-get install -y google-chrome-stable
-            pip install robotframework
-            pip install robotframework-seleniumlibrary
-            pip install chromedriver-autoinstaller
-            chromedriver-autoinstaller install
-
-  test:
-    executor: python-executor
-    steps:
-      - checkout
-      - run:
-          name: Run Tests
-          command: |
-            robot -d results tests/
-      - store_artifacts:
-          path: results
-          destination: test-results
-
-  test_remote:
+  test_local:
     docker:
-      - image: selenium/standalone-chrome
-      - image: selenium/standalone-firefox
-      - image: selenium/standalone-opera
-      - image: selenium/standalone-edge
-      - image: selenium/standalone-safari
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      #- run:
+      #    name: Install necessary system dependencies for browsers
+      #    command: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxt6 libasound2
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Local Chrome Headless"
+          command: |
+            mkdir -p results/local/chrome
+            robot -v BROWSER:Chrome -v RUN_REMOTE:False -d results/local/chrome tests/
+      - store_artifacts:
+          path: results/local/chrome
+          destination: test-reports/local/chrome
+
+
+  test_remote_chrome:
+    docker:
+      - image: cimg/python:3.9
     steps:
       - checkout
       - run:
-          name: Run Tests on Remote Browsers
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Chrome"
           command: |
-            export SELENIUM_REMOTE_URL="http://localhost:4444/wd/hub"
-            robot -d results tests/
+            mkdir -p results/remote/chrome
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
+            robot -v BROWSER:Chrome -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/chrome tests/
       - store_artifacts:
-          path: results
-          destination: test-results
+          path: results/remote/chrome
+          destination: test-reports/remote/chrome
+
+  test_remote_firefox:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Firefox"
+          command: |
+            mkdir -p results/remote/firefox
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
+            robot -v BROWSER:Firefox -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/firefox tests/
+      - store_artifacts:
+          path: results/remote/firefox
+          destination: test-reports/remote/firefox
+
+  test_remote_edge:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Edge"
+          command: |
+            mkdir -p results/remote/edge
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
+            robot -v BROWSER:Edge -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/edge tests/
+      - store_artifacts:
+          path: results/remote/edge
+          destination: test-reports/remote/edge
+
+  test_remote_opera:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary selenium==4.2.0
+      - run:
+          name: "Run Tests on Opera"
+          command: |
+            mkdir -p results/remote/opera
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
+            robot -v BROWSER:Opera -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/opera tests/
+      - store_artifacts:
+          path: results/remote/opera
+          destination: test-reports/remote/opera
+  test_remote_safari:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Safari"
+          command: |
+            mkdir -p results/remote/safari
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
+            robot -v BROWSER:Safari -v PLATFORM:MAC -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
+      - store_artifacts:
+          path: results/remote/safari
+          destination: test-reports/remote/safari
+
+  #testing!
+  test_mac:
+    macos:
+      xcode: "15.4.0"
+    steps:
+      - checkout
+      - run:
+          name: Install Robot Framework and SeleniumLibrary
+          command: |
+            pip3 install robotframework robotframework-seleniumlibrary selenium
+      - run:
+          name: Enable SafariDriver
+          command: |
+            sudo safaridriver --enable
+      - run:
+          name: Enable Safari Remote Automation
+          command: |
+            osascript enable_safari_automation.applescript
+      - run:
+          name: "Run Tests on Safari-Browser (MAC)"
+          command: |
+            mkdir -p results/safari
+            robot -v BROWSER:Safari -d results/safari tests/
+      - store_artifacts:
+          path: results/safari
+          destination: test-reports/safari
 
 workflows:
   version: 2
-  test-workflow:
+  build:
     jobs:
-      - setup
-      - test
-      - test_remote
+      - test_local
+      - test_remote_chrome
+      - test_remote_firefox
+      - test_remote_edge
+      - test_remote_opera
+      - test_remote_safari
+      #- test_mac
