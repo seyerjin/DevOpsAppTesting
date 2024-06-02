@@ -34,7 +34,7 @@ Add Opera Options
     Call Method    ${options}    add_experimental_option    w3c    True
 
 Set Remote Options
-    [Arguments]    ${browser}    ${browser_version}
+    [Arguments]    ${browserName}    ${browserVersion}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     # Call Method    ${options}    set_capability    platform    ${platform}
