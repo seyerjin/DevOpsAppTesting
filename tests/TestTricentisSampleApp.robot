@@ -5,7 +5,7 @@ Library    BuiltIn
 *** Variables ***
 #${BROWSER}       Chrome
 #${PLATFORM}      ANY
-#${BROWSER_VERSION}    latest
+${BROWSER_VERSION}    latest
 ${URL}           https://sampleapp.tricentis.com/101/app.php
 ${FILE_NAME}     Car.webp
 ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
@@ -16,7 +16,7 @@ ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
 Open Browser With Options
     [Arguments]    ${url}=${URL}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
     Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browserName}    ${PLATFORM}    ${BROWSER_VERSION}
-    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${URL}    ${browserName}    options=${OPTIONS}    remote_url=${REMOTE_URL}
+    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${URL}    ${browserName}    options=${options}    remote_url=${REMOTE_URL}
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${URL}    ${browserName}
 
 Open Local Browser With Options
