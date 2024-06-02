@@ -87,6 +87,25 @@ jobs:
           path: results/remote/edge
           destination: test-reports/remote/edge
 
+  test_remote_opera:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
+      - run:
+          name: "Run Tests on Opera"
+          command: |
+            mkdir -p results/remote/opera
+            export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
+            export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
+            robot -v BROWSER:Opera -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/opera tests/
+      - store_artifacts:
+          path: results/remote/opera
+          destination: test-reports/remote/opera
   test_remote_safari:
     docker:
       - image: cimg/python:3.9
@@ -102,7 +121,7 @@ jobs:
             export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
             export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
             export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
-            robot -v BROWSER:Safari -v PLATFORM:macOS -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
+            robot -v BROWSER:Safari -v PLATFORM:MAC -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
       - store_artifacts:
           path: results/remote/safari
           destination: test-reports/remote/safari
