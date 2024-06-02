@@ -58,7 +58,7 @@ jobs:
           command: |
             mkdir -p results/remote/firefox
             export REMOTE_URL=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-            robot -v browserName:firefox -v browserVersion:110.0 -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/firefox tests/
+            robot -v browserName:firefox -v browserVersion:110.0 -v PLATFORM:Windows -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/firefox tests/
       - store_artifacts:
           path: results/remote/firefox
           destination: test-reports/remote/firefox
@@ -76,7 +76,7 @@ jobs:
           command: |
             mkdir -p results/remote/edge
             export REMOTE_URL=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-            robot -v browserName:MicrosoftEdge -v browserVersion:111.0.1661.41 -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/edge tests/
+            robot -v browserName:MicrosoftEdge -v browserVersion:111.0.1661.41 -v PLATFORM:Windows -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/edge tests/
       - store_artifacts:
           path: results/remote/edge
           destination: test-reports/remote/edge
@@ -94,7 +94,7 @@ jobs:
           command: |
             mkdir -p results/remote/opera
             export REMOTE_URL=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-            robot -v browserName:opera browserVersion:97.0.4719.28 -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/opera tests/
+            robot -v browserName:opera browserVersion:97.0.4719.28 -v PLATFORM:Windows -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/opera tests/
       - store_artifacts:
           path: results/remote/opera
           destination: test-reports/remote/opera
@@ -112,7 +112,7 @@ jobs:
           command: |
             mkdir -p results/remote/safari
             export REMOTE_URL=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-            robot -v browserName:safari -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
+            robot -v browserName:safari -v PLATFORM:MAC -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
       - store_artifacts:
           path: results/remote/safari
           destination: test-reports/remote/safari
