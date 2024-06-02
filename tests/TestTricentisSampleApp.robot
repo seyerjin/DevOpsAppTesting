@@ -17,7 +17,7 @@ Open Browser With Options
     [Arguments]    ${URL}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
     Run Keyword If    '${REMOTE_URL}'=='eTruee'    Set Remote Options    ${browserName}    ${PLATFORM}    ${BROWSER_VERSION}
     #Run Keyword If    '${REMOTE_URL}'=='eTruee'    Open Browser    ${URL}    ${browserName}    options=${OPTIONS}    remote_url=${REMOTE_URL}
-    Open Browser    ${URL}    Chrome    options=${OPTIONS}    remote_url=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+    Open Browser    ${URL}    Chrome    options=${OPTIONS}    browser_version=latest    remote_url=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
     Run Keyword If    '${REMOTE_URL}'=='False'   Open Local Browser With Options    ${URL}    ${browserName}
 
 Open Local Browser With Options
