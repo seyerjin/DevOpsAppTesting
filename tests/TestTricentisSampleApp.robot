@@ -3,14 +3,14 @@ Library    SeleniumLibrary
 Library    BuiltIn
 
 *** Variables ***
-${BROWSER}       Chrome
-${PLATFORM}      ANY
-${BROWSER_VERSION}    latest
+#${BROWSER}       Chrome
+#${PLATFORM}      ANY
+#${BROWSER_VERSION}    latest
 ${URL}           https://sampleapp.tricentis.com/101/app.php
 ${FILE_NAME}     Car.webp
 ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
-${REMOTE_URL}    None
-${RUN_REMOTE}    False
+#${REMOTE_URL}    None
+#${RUN_REMOTE}    False
 
 *** Keywords ***
 Open Browser With Options
