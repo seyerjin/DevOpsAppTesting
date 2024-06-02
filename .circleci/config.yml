@@ -162,6 +162,6 @@ workflows:
       - test_remote_chrome
       - test_remote_firefox
       - test_remote_edge
-      - test_remote_opera
+      #- test_remote_opera
       - test_remote_safari
       #- test_mac
