@@ -14,8 +14,8 @@ ${RUN_REMOTE}    False
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${browserName}=${BROWSER}    ${browserVersion}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browserName}    ${browserVersion}
+    [Arguments]    ${url}    ${BROWSER}=${browserName}    ${BROWSER_VERSION}=${browserVersion}    ${platform}=${PLATFORM}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
+    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browserName}    ${browserVersion}    ${platform}
     Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browserName}    options=${OPTIONS}    remote_url=${remote_url}
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
 
@@ -34,10 +34,10 @@ Add opera Options
     Call Method    ${options}    add_experimental_option    w3c    True
 
 Set Remote Options
-    [Arguments]    ${browserName}    ${browserVersion}
+    [Arguments]    ${browserName}    ${browserVersion}    ${platform}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browserName}' == 'opera'    Add Opera Options    ${options}
-    # Call Method    ${options}    set_capability    platform    ${platform}
+    Call Method    ${options}    set_capability    platform    ${platform}
     Call Method    ${options}    set_capability    browserVersion    ${browser_version}
     Call Method    ${options}    set_capability    browserName    ${browser}
     Set Suite Variable    ${OPTIONS}    ${options}
