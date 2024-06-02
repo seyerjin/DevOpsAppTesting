@@ -14,19 +14,19 @@ ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${browserName}=${browser}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browser}    ${platform}    ${browser_version}
-    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browser}    options=${OPTIONS}    remote_url=${remote_url}
-    Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
+    [Arguments]    ${url}    ${browserName}=${BROWSER}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
+    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browserName}    ${platform}    ${browser_version}
+    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browserName}    options=${OPTIONS}    remote_url=${remote_url}
+    Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browserName}
 
 Open Local Browser With Options
     [Arguments]    ${url}    ${browser}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Open Browser    ${url}    ${browser}    options=${options}
+    Open Browser    ${url}    ${browserName}    options=${options}
 
 #Test4Opera_
 Add Opera Options
@@ -36,7 +36,7 @@ Add Opera Options
 
 Set Remote Options
     [Arguments]    ${browser}    ${platform}    ${browser_version}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
@@ -48,7 +48,7 @@ Set Remote Options
     Call Method    ${options}    add_argument    --start-maximized
     Call Method    ${options}    set_capability    platform    ${platform}
     Call Method    ${options}    set_capability    browserVersion    ${browser_version}
-    Call Method    ${options}    set_capability    browserName    ${browser}
+    Call Method    ${options}    set_capability    browserName    ${browserName}
     Set Suite Variable    ${OPTIONS}    ${options}
 
 Select Price Option And Validate
