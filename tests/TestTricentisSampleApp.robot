@@ -5,7 +5,7 @@ Library    BuiltIn
 *** Variables ***
 ${BROWSER}       Chrome
 ${PLATFORM}      ANY
-${BROWSERVERSION}    latest
+${BROWSER_VERSION}    latest
 ${URL}           https://sampleapp.tricentis.com/101/app.php
 ${FILE_NAME}     Car.webp
 ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
@@ -14,32 +14,33 @@ ${RUN_REMOTE}    False
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${BROWSER}=${browserName}    ${BROWSER_VERSION}=${browserVersion}    ${platform}=${PLATFORM}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browserName}    ${browserVersion}    ${platform}
-    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browserName}    options=${OPTIONS}    remote_url=${remote_url}
+    [Arguments]    ${url}    ${browser}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
+    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browser}    ${platform}    ${browser_version}
+    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browser}    options=${OPTIONS}    remote_url=${remote_url}
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
 
 Open Local Browser With Options
-    [Arguments]    ${url}    ${BROWSER}
+    [Arguments]    ${url}    ${browser}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${BROWSER}' == 'opera'    Add opera Options    ${options}
+    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Open Browser    ${url}    ${BROWSER}    options=${options}
+    Open Browser    ${url}    ${browser}    options=${options}
 
-Add opera Options
+#Test4Opera_
+Add Opera Options
     [Arguments]    ${options}
     Call Method    ${options}    add_argument    allow-elevated-browser
     Call Method    ${options}    add_experimental_option    w3c    True
 
 Set Remote Options
-    [Arguments]    ${browserName}    ${browserVersion}    ${platform}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browserName}' == 'opera'    Add Opera Options    ${options}
+    [Arguments]    ${browser}    ${platform}    ${browser_version}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    set_capability    platform    ${platform}
     Call Method    ${options}    set_capability    browserVersion    ${browser_version}
-    Call Method    ${options}    set_capability    browserName    ${browserName}
+    Call Method    ${options}    set_capability    browserName    ${browser}
     Set Suite Variable    ${OPTIONS}    ${options}
 
 Select Price Option And Validate
@@ -111,7 +112,7 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    ${URL}    ${BROWSER}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -121,7 +122,7 @@ Complete Insurance Process For Silver
     [Teardown]    Close Browser
 
 Complete Insurance Process For Gold
-    Open Browser With Options    ${URL}    ${BROWSER}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -131,7 +132,7 @@ Complete Insurance Process For Gold
     [Teardown]    Close Browser
 
 Complete Insurance Process For Platinum
-    Open Browser With Options    ${URL}    ${BROWSER}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -141,7 +142,7 @@ Complete Insurance Process For Platinum
     [Teardown]    Close Browser
 
 Complete Insurance Process For Ultimate
-    Open Browser With Options    ${URL}    ${BROWSER}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
