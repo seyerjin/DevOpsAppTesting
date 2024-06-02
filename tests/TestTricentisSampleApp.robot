@@ -28,6 +28,7 @@ Open Local Browser With Options
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
     Open Browser    ${url}    ${browser}    options=${options}
 
+#Test4Opera
 Add Opera Options
     [Arguments]    ${options}
     Call Method    ${options}    add_argument    allow-elevated-browser
