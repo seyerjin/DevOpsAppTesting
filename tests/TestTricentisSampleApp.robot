@@ -27,10 +27,13 @@ Open Local Browser With Options
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
     Open Browser    ${url}    ${browser}    options=${options}
 
-Set Desired Capabilities
+Set Remote Options
     [Arguments]    ${browser}    ${platform}    ${browser_version}
-    &{capabilities}=    Create Dictionary    browserName=${browser}    platform=${platform}    browserVersion=${browser_version}
-    Set Suite Variable    ${CAPABILITIES}    &{capabilities}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    Call Method    ${options}    set_capability    platform    ${platform}
+    Call Method    ${options}    set_capability    browserVersion    ${browser_version}
+    Call Method    ${options}    set_capability    browserName    ${browser}
+    Set Suite Variable    ${OPTIONS}    ${options}
 
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
