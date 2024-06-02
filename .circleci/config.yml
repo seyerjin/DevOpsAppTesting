@@ -129,7 +129,7 @@ jobs:
   #testing!
   test_mac:
     macos:
-      xcode: "12.5.1"
+      xcode: "15.4.0"
     steps:
       - checkout
       - run:
