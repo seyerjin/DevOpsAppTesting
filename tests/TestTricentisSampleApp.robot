@@ -3,21 +3,34 @@ Library    SeleniumLibrary
 Library    BuiltIn
 
 *** Variables ***
-${BROWSER}    Chrome
-${URL}        https://sampleapp.tricentis.com/101/app.php
-${FILE_NAME}  Car.webp
-${FILE_PATH}  ${CURDIR}/${FILE_NAME}
+${BROWSER}       Chrome
+${PLATFORM}      ANY
+${BROWSER_VERSION}    latest
+${URL}           https://sampleapp.tricentis.com/101/app.php
+${FILE_NAME}     Car.webp
+${FILE_PATH}     ${CURDIR}/${FILE_NAME}
+${REMOTE_URL}    None
+${RUN_REMOTE}    False
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${browser}
-    # Initialize options based on the browser
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser.capitalize()}Options()    sys, selenium.webdriver
+    [Arguments]    ${url}    ${browser}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
+    Run Keyword If    '${run_remote}'=='True'    Set Desired Capabilities    ${browser}    ${platform}    ${browser_version}
+    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    remote_url=${remote_url}    desired_capabilities=${CAPABILITIES}
+    Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
 
-    # Add headless argument based on the browser
+Open Local Browser With Options
+    [Arguments]    ${url}    ${browser}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Call Method    ${options}    add_argument    --headless
-    ${actual_browser}=    Set Variable If    '${browser}' == 'Opera'    Chrome    ${browser}
-    Open Browser    ${url}    ${actual_browser}    options=${options}
+    Call Method    ${options}    add_argument    --no-sandbox
+    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Open Browser    ${url}    ${browser}    options=${options}
+
+Set Desired Capabilities
+    [Arguments]    ${browser}    ${platform}    ${browser_version}
+    &{capabilities}=    Create Dictionary    browserName=${browser}    platform=${platform}    browserVersion=${browser_version}
+    Set Suite Variable    ${CAPABILITIES}    &{capabilities}
 
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
@@ -43,7 +56,6 @@ Fill Quote Form
     Submit Form And Validate
 
 Enter Vehicle Data
-    [Arguments]    
     Select From List By Label    id=make    Volkswagen
     Select From List By Label    id=model    Scooter
     Input Text    id=cylindercapacity    2000
@@ -61,7 +73,6 @@ Enter Vehicle Data
     Click Button    id=nextenterinsurantdata
 
 Enter Insurant Data
-    [Arguments]    
     Input Text    id=firstname     Marty
     Input Text    id=lastname      McFly
     Input Text    id=birthdate    01/01/1968
@@ -80,7 +91,6 @@ Enter Insurant Data
     Click Button    id=nextenterproductdata
 
 Enter Product Data
-    [Arguments]    
     Input Text    id=startdate    12/01/2024
     Select From List By Label    id=insurancesum    10.000.000,00
     Select From List By Label    id=meritrating    Bonus 9
@@ -89,10 +99,9 @@ Enter Product Data
     Select From List By Label    id=courtesycar    Yes
     Click Button    id=nextselectpriceoption
 
-
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    ${URL}    ${BROWSER}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -100,8 +109,9 @@ Complete Insurance Process For Silver
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
+
 Complete Insurance Process For Gold
-    Open Browser With Options    ${URL}    ${BROWSER}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -109,8 +119,9 @@ Complete Insurance Process For Gold
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
+
 Complete Insurance Process For Platinum
-    Open Browser With Options    ${URL}    ${BROWSER}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -120,7 +131,7 @@ Complete Insurance Process For Platinum
     [Teardown]    Close Browser
 
 Complete Insurance Process For Ultimate
-    Open Browser With Options    ${URL}    ${BROWSER}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data

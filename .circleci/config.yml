@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   browser-tools: circleci/browser-tools@1.4.8
+  python: circleci/python@1.2.3
 
 jobs:
   test_local:
@@ -13,14 +14,16 @@ jobs:
       - run:
           name: Install necessary system dependencies for browsers
           command: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxt6 libasound2
+      - python/install-packages:
+          pkg-manager: pip
+          packages: 
+            - robotframework
+            - robotframework-seleniumlibrary
       - run:
-          name: Install Robot Framework and SeleniumLibrary
-          command: pip install robotframework robotframework-seleniumlibrary
-      - run:
-          name: "Run Tests on Local Chrome"
+          name: "Run Tests on Local Chrome Headless"
           command: |
             mkdir -p results/local/chrome
-            robot -v BROWSER:Chrome -d results/local/chrome tests/
+            robot -v BROWSER:Chrome -v RUN_REMOTE:False -d results/local/chrome tests/
       - store_artifacts:
           path: results/local/chrome
           destination: test-reports/local/chrome
@@ -31,26 +34,28 @@ jobs:
     steps:
       - checkout
       #- browser-tools/install-browser-tools
-      - run:
-          name: Install Robot Framework and SeleniumLibrary
-          command: pip install robotframework robotframework-seleniumlibrary
+      - python/install-packages:
+          pkg-manager: pip
+          packages: 
+            - robotframework
+            - robotframework-seleniumlibrary
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
             mkdir -p results/remote
-            # Set BrowserStack environment variables
             export BROWSERSTACK_USERNAME=$BROWSERSTACK_USERNAME
             export BROWSERSTACK_ACCESS_KEY=$BROWSERSTACK_ACCESS_KEY
+            export REMOTE_URL=https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub
             # Run tests on BrowserStack remote browsers
-            # Define a unique directory for each browser's results
-            robot -v BROWSER:chrome -v REMOTE_URL:https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/3668e5aa5c964b29b3e064f16dbcfd5b/wd/hub -d results/remote/chrome tests/
-            #robot -v BROWSER:Chrome -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/chrome tests/
-            ##robot -v BROWSER:Firefox -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/firefox tests/
-            #robot -v BROWSER:Edge -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/edge tests/
-            #robot -v BROWSER:Opera -v REMOTE_URL:https://${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub -d results/remote/opera tests/
+            robot -v BROWSER:Chrome -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/chrome tests/
+            robot -v BROWSER:Firefox -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/firefox tests/
+            robot -v BROWSER:Edge -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/edge tests/
+            robot -v BROWSER:Safari -v PLATFORM:macOS -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
       - store_artifacts:
           path: results/remote
-          destination: test-reports
+          destination: test-reports/remote
+
+  #testing!
   test_mac:
     macos:
       xcode: "12.5.1"
@@ -71,21 +76,11 @@ jobs:
       - run:
           name: "Run Tests on Safari-Browser (MAC)"
           command: |
+            mkdir -p results/safari
             robot -v BROWSER:Safari -d results/safari tests/
       - store_artifacts:
           path: results/safari
-          destination: test-reports
-
-#  store_artifacts:
-#    docker:
-#      - image: cimg/python:3.9
-#    steps:
-#      - checkout
-#      - attach_workspace:
-#          at: /tmp/workspace
-#      - store_artifacts:
-#          path: results
-#          destination: test-reports
+          destination: test-reports/safari
 
 workflows:
   version: 2
@@ -94,7 +89,3 @@ workflows:
       - test_local
       - test_remote
       #- test_mac
-      #- store_artifacts:
-      #    requires:
-      #      - test_local
-      #      - test_remote
