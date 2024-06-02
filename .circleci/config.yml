@@ -98,7 +98,6 @@ jobs:
       - store_artifacts:
           path: results/remote/opera
           destination: test-reports/remote/opera
- 
  test_remote_safari:
     docker:
       - image: cimg/python:3.9
