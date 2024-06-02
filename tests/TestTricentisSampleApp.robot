@@ -20,23 +20,23 @@ Open Browser With Options
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
 
 Open Local Browser With Options
-    [Arguments]    ${url}    ${browser}
+    [Arguments]    ${url}    ${BROWSER}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
+    Run Keyword If    '${BROWSER}' == 'opera'    Add opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Open Browser    ${url}    ${browser}    options=${options}
+    Open Browser    ${url}    ${BROWSER}    options=${options}
 
-Add Opera Options
+Add opera Options
     [Arguments]    ${options}
     Call Method    ${options}    add_argument    allow-elevated-browser
     Call Method    ${options}    add_experimental_option    w3c    True
 
 Set Remote Options
     [Arguments]    ${browserName}    ${browserVersion}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    Run Keyword If    '${browserName}' == 'opera'    Add Opera Options    ${options}
     # Call Method    ${options}    set_capability    platform    ${platform}
     Call Method    ${options}    set_capability    browserVersion    ${browser_version}
     Call Method    ${options}    set_capability    browserName    ${browser}
