@@ -21,7 +21,7 @@ Open Browser With Options
 
 Open Local Browser With Options
     [Arguments]    ${url}    ${browser}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
@@ -36,7 +36,7 @@ Add Opera Options
 
 Set Remote Options
     [Arguments]    ${browser}    ${platform}    ${browser_version}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
     Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
