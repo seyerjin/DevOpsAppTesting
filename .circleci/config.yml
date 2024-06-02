@@ -39,7 +39,7 @@ jobs:
           name: "Run Tests on Chrome"
           command: |
             mkdir -p results/remote/chrome
-            export REMOTE_URL=https://chrome_111.0.5563.64@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+            export REMOTE_URL=https://chrome@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
             robot --loglevel DEBUG -v BROWSER:Chrome -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/chrome tests/
       - store_artifacts:
           path: results/remote/chrome
@@ -57,7 +57,7 @@ jobs:
           name: "Run Tests on Firefox"
           command: |
             mkdir -p results/remote/firefox
-            export REMOTE_URL=https://firefox_110.0@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+            export REMOTE_URL=https://firefox@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
             robot --loglevel DEBUG -v BROWSER:Firefox -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/firefox tests/
       - store_artifacts:
           path: results/remote/firefox
@@ -75,7 +75,7 @@ jobs:
           name: "Run Tests on Edge"
           command: |
             mkdir -p results/remote/edge
-            export REMOTE_URL=https://microsoftedge_111.0.1661.41@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+            export REMOTE_URL=https://microsoftedge@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
             robot --loglevel DEBUG -v BROWSER:Edge -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/edge tests/
       - store_artifacts:
           path: results/remote/edge
@@ -93,7 +93,7 @@ jobs:
           name: "Run Tests on Opera"
           command: |
             mkdir -p results/remote/opera
-            export REMOTE_URL=https://opera_97.0.4719.28@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+            export REMOTE_URL=https://opera@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
             robot --loglevel DEBUG -v BROWSER:opera -v PLATFORM:Windows -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/opera tests/
       - store_artifacts:
           path: results/remote/opera
@@ -111,7 +111,7 @@ jobs:
           name: "Run Tests on Safari"
           command: |
             mkdir -p results/remote/safari
-            export REMOTE_URL=https://safari_16.6@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+            export REMOTE_URL=https://safari@tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
             robot --loglevel DEBUG -v BROWSER:Safari -v PLATFORM:MAC -v BROWSER_VERSION:latest -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/safari tests/
       - store_artifacts:
           path: results/remote/safari
