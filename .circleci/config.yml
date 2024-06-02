@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.2
 
 orbs:
   browser-tools: circleci/browser-tools@1.4.8
@@ -98,7 +98,8 @@ jobs:
       - store_artifacts:
           path: results/remote/opera
           destination: test-reports/remote/opera
- test_remote_safari:
+
+  test_remote_safari:
     docker:
       - image: cimg/python:3.9
     steps:
