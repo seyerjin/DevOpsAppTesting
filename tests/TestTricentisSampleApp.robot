@@ -22,14 +22,21 @@ Open Browser With Options
 Open Local Browser With Options
     [Arguments]    ${url}    ${browser}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
     Open Browser    ${url}    ${browser}    options=${options}
 
+Add Opera Options
+    [Arguments]    ${options}
+    Call Method    ${options}    add_argument    allow-elevated-browser
+    Call Method    ${options}    add_experimental_option    w3c    True
+
 Set Remote Options
     [Arguments]    ${browser}    ${platform}    ${browser_version}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
+    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    set_capability    platform    ${platform}
     Call Method    ${options}    set_capability    browserVersion    ${browser_version}
     Call Method    ${options}    set_capability    browserName    ${browser}
