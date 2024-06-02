@@ -40,7 +40,7 @@ jobs:
           command: |
             mkdir -p results/remote/chrome
             export REMOTE_URL=https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9091/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-            robot -v browserName:chrome -v browserVersion:111.0.5563.64 -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/chrome tests/
+            robot -v browserName:chrome -v browserVersion:111.0.5563.64 -v PLATFORM:Windows -v REMOTE_URL:${REMOTE_URL} -v RUN_REMOTE:True -d results/remote/chrome tests/
       - store_artifacts:
           path: results/remote/chrome
           destination: test-reports/remote/chrome
