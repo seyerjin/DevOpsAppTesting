@@ -14,10 +14,10 @@ ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${REMOTE_URL}'=='eTruee'    Set Remote Options    ${browser}    ${platform}    ${browser_version}
-    Run Keyword If    '${REMOTE_URL}'=='eTruee'    Open Browser    ${url}    ${browser}    options=${OPTIONS}    remote_url=${remote_url}
-    Run Keyword If    '${REMOTE_URL}'=='False'   Open Local Browser With Options    ${url}    ${browser}
+    [Arguments]    ${URL}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
+    Run Keyword If    '${REMOTE_URL}'=='eTruee'    Set Remote Options    ${browserName}    ${PLATFORM}    ${BROWSER_VERSION}
+    Run Keyword If    '${REMOTE_URL}'=='eTruee'    Open Browser    ${URL}    ${browserName}    options=${OPTIONS}    remote_url=${REMOTE_URL}
+    Run Keyword If    '${REMOTE_URL}'=='False'   Open Local Browser With Options    ${URL}    ${browserName}
 
 Open Local Browser With Options
     [Arguments]    ${url}    ${browser}
