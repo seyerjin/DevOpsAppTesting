@@ -20,9 +20,9 @@ Open Browser With Options
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browserName}
 
 Open Local Browser With Options
-    [Arguments]    ${url}    ${browser}
+    [Arguments]    ${url}    ${browserName}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
+    Run Keyword If    '${browserName}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
@@ -35,9 +35,9 @@ Add Opera Options
     Call Method    ${options}    add_experimental_option    w3c    True
 
 Set Remote Options
-    [Arguments]    ${browser}    ${platform}    ${browser_version}
+    [Arguments]    ${browserName}    ${platform}    ${browser_version}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browserName}' in ['Chrome', 'Opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
+    Run Keyword If    '${browserName}' == 'Opera'    Add Opera Options    ${options}
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
