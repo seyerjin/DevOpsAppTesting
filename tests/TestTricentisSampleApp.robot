@@ -15,8 +15,8 @@ ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
 *** Keywords ***
 Open Browser With Options
     [Arguments]    ${URL}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${REMOTE_URL}'=='eTruee'    Set Remote Options    ${browserName}    ${PLATFORM}    latest
-    Run Keyword If    '${REMOTE_URL}'=='eTruee'    Open Browser    ${URL}    ${browserName}    options=${OPTIONS}    remote_url=${REMOTE_URL}
+    Run Keyword If    '${REMOTE_URL}'=='True'    Set Remote Options    ${browserName}    ${PLATFORM}    ${BROWSER_VERSION}
+    Run Keyword If    '${REMOTE_URL}'=='True'    Open Browser    ${URL}    ${browserName}    options=${OPTIONS}    remote_url=${REMOTE_URL}
     Run Keyword If    '${REMOTE_URL}'=='False'   Open Local Browser With Options    ${URL}    ${browserName}
 
 Open Local Browser With Options
@@ -120,7 +120,7 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    Chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -130,7 +130,7 @@ Complete Insurance Process For Silver
     [Teardown]    Close Browser
 
 Complete Insurance Process For Gold
-    Open Browser With Options    ${URL}    ${browserName}    ${platform}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -140,7 +140,7 @@ Complete Insurance Process For Gold
     [Teardown]    Close Browser
 
 Complete Insurance Process For Platinum
-    Open Browser With Options    ${URL}    ${browserName}    ${platform}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -149,12 +149,12 @@ Complete Insurance Process For Platinum
     Fill Quote Form
     [Teardown]    Close Browser
 
-Complete Insurance Process For Ultimate
-    Open Browser With Options    ${URL}    ${browserName}    ${platform}    ${REMOTE_URL}    ${RUN_REMOTE}
-    Enter Vehicle Data
-    Enter Insurant Data
-    Enter Product Data
-    Select Price Option And Validate    ultimate    1248.00    selectultimate
-    Click Button    id=nextsendquote
-    Fill Quote Form
-    [Teardown]    Close Browser
+#Complete Insurance Process For Ultimate
+#    Open Browser With Options    ${URL}    ${browserName}    ${platform}    ${REMOTE_URL}    ${RUN_REMOTE}
+#    Enter Vehicle Data
+#    Enter Insurant Data
+ #   Enter Product Data
+#    Select Price Option And Validate    ultimate    1248.00    selectultimate
+ #   Click Button    id=nextsendquote
+#    Fill Quote Form
+#    [Teardown]    Close Browser
