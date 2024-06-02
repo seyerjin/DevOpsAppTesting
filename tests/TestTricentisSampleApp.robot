@@ -15,8 +15,8 @@ ${RUN_REMOTE}    False
 *** Keywords ***
 Open Browser With Options
     [Arguments]    ${url}    ${browser}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${run_remote}'=='True'    Set Desired Capabilities    ${browser}    ${platform}    ${browser_version}
-    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    remote_url=${remote_url}    desired_capabilities=${CAPABILITIES}
+    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browser}    ${platform}    ${browser_version}
+    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browser}    options=${OPTIONS}    remote_url=${remote_url}
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
 
 Open Local Browser With Options
