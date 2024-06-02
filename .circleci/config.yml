@@ -21,7 +21,7 @@ jobs:
           name: "Run Tests on Local Chrome Headless"
           command: |
             mkdir -p results/local/chrome
-            robot -v BROWSER:Chrome -v RUN_REMOTE:False -d results/local/chrome tests/
+            robot -v browserName:Chrome -v RUN_REMOTE:False -d results/local/chrome tests/
       - store_artifacts:
           path: results/local/chrome
           destination: test-reports/local/chrome
