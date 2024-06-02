@@ -94,7 +94,7 @@ jobs:
       - checkout
       - run:
           name: Install Python Packages
-          command: pip install robotframework robotframework-seleniumlibrary
+          command: pip install robotframework robotframework-seleniumlibrary selenium==4.2.0
       - run:
           name: "Run Tests on Opera"
           command: |
