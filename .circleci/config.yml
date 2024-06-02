@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   browser-tools: circleci/browser-tools@1.4.8
-  python: circleci/python@1.2.3
 
 jobs:
   test_local:
@@ -14,11 +13,9 @@ jobs:
       - run:
           name: Install necessary system dependencies for browsers
           command: sudo apt-get update && sudo apt-get install -y libgtk-3-0 libdbus-glib-1-2 libxt6 libasound2
-      - python/install-packages:
-          pkg-manager: pip
-          packages: 
-            - robotframework
-            - robotframework-seleniumlibrary
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
       - run:
           name: "Run Tests on Local Chrome Headless"
           command: |
@@ -34,11 +31,9 @@ jobs:
     steps:
       - checkout
       #- browser-tools/install-browser-tools
-      - python/install-packages:
-          pkg-manager: pip
-          packages: 
-            - robotframework
-            - robotframework-seleniumlibrary
+      - run:
+          name: Install Python Packages
+          command: pip install robotframework robotframework-seleniumlibrary
       - run:
           name: "Run Tests on Multiple Remote Browsers"
           command: |
