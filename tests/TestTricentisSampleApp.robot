@@ -5,7 +5,7 @@ Library    BuiltIn
 *** Variables ***
 #${BROWSER}       Chrome
 #${PLATFORM}      ANY
-${BROWSER_VERSION}    latest
+#${BROWSER_VERSION}    latest
 ${URL}           https://sampleapp.tricentis.com/101/app.php
 ${FILE_NAME}     Car.webp
 ${FILE_PATH}     ${CURDIR}/${FILE_NAME}
