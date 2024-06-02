@@ -14,7 +14,7 @@ ${RUN_REMOTE}    False
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
+    [Arguments]    ${url}    ${browserName}=${browser}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
     Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browser}    ${platform}    ${browser_version}
     Run Keyword If    '${run_remote}'=='True'    Open Browser    ${url}    ${browser}    options=${OPTIONS}    remote_url=${remote_url}
     Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${url}    ${browser}
@@ -112,7 +112,7 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -122,7 +122,7 @@ Complete Insurance Process For Silver
     [Teardown]    Close Browser
 
 Complete Insurance Process For Gold
-    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -132,7 +132,7 @@ Complete Insurance Process For Gold
     [Teardown]    Close Browser
 
 Complete Insurance Process For Platinum
-    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -142,7 +142,7 @@ Complete Insurance Process For Platinum
     [Teardown]    Close Browser
 
 Complete Insurance Process For Ultimate
-    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${BROWSER_VERSION}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Open Browser With Options    ${URL}    ${BROWSER}    ${PLATFORM}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
