@@ -120,7 +120,7 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    Chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub    eTruee
+    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    Chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
