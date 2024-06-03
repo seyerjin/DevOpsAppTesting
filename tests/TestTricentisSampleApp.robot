@@ -1,55 +1,25 @@
 *** Settings ***
 Library    SeleniumLibrary
-Library    BuiltIn
 
 *** Variables ***
-#${BROWSER}       Chrome
-#${PLATFORM}      ANY
-${BROWSER_VERSION}    latest
-${URL}           https://sampleapp.tricentis.com/101/app.php
-${FILE_NAME}     Car.webp
-${FILE_PATH}     ${CURDIR}/${FILE_NAME}
-#${REMOTE_URL}    None
-#${RUN_REMOTE}    False
+${URL}                https://sampleapp.tricentis.com/101/app.php
+${REMOTE_URL}         https://appium.tdc.tricentis-cloud.com:443/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+${BROWSER_NAME}       "chrome"
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${url}=${URL}    ${browser}=${browserName}    ${platform}=${PLATFORM}    ${browser_version}=${BROWSER_VERSION}    ${remote_url}=${REMOTE_URL}    ${run_remote}=${RUN_REMOTE}
-    Run Keyword If    '${run_remote}'=='True'    Set Remote Options    ${browserName}    ${PLATFORM}    ${BROWSER_VERSION}
-    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${URL}    ${browserName}    options=${options}    remote_url=${REMOTE_URL}
-    Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${URL}    ${browserName}
+    [Arguments]    ${URL}  ${REMOTE_URL}
+    ${options}=    Set Chrome Options
+    Open Browser    ${URL}    ${BROWSER_NAME}  remote_url=${REMOTE_URL}  options=${options}
 
-Open Local Browser With Options
-    [Arguments]    ${url}    ${browser}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
-    Call Method    ${options}    add_argument    --headless
-    Call Method    ${options}    add_argument    --no-sandbox
-    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Open Browser    ${url}    ${browser}    options=${options}
+Set Chrome Options
+    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${chrome_options}    add_argument    --headless
+    Call Method    ${chrome_options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
+    Call Method    ${chrome_options}    set_capability    "tdc:selector"    'device_skus:"Chrome"'
+    Set Suite Variable    ${chrome_options}
+    Return From Keyword    ${chrome_options}
 
-#Test4Opera_
-Add Opera Options
-    [Arguments]    ${options}
-    Call Method    ${options}    add_argument    allow-elevated-browser
-    Call Method    ${options}    add_experimental_option    w3c    True
-
-Set Remote Options
-    [Arguments]    ${browser}    ${platform}    ${browser_version}
-    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions() if '${browser}' in ['chrome', 'opera'] else sys.modules['selenium.webdriver'].${browser}Options()    sys, selenium.webdriver
-    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
-    Call Method    ${options}    set_capability    platform    ${platform}
-    Call Method    ${options}    set_capability    browserVersion    ${browser_version}
-    Call Method    ${options}    set_capability    browserName    ${browserName}
-    Call Method    ${options}    add_argument    --headless
-    Call Method    ${options}    add_argument    --no-sandbox
-    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Call Method    ${options}    add_argument    --disable-application-cache'
-    Call Method    ${options}    add_argument    --disable-setuid-sandbox
-    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Call Method    ${options}    add_argument    --disable-gpu
-    Call Method    ${options}    add_argument    --start-maximized
-    Set Suite Variable    ${OPTIONS}    ${options}
 
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
@@ -105,8 +75,6 @@ Enter Insurant Data
     Execute Javascript    document.getElementById('bungeejumping').click()
     Input Text    id=website    https://www.backtothefuture.com/
     Click Button    id=open
-    Choose File    xpath=//input[@type="file"]    ${FILE_PATH}
-    Input Text    id=picture    ${FILE_NAME}
     Click Button    id=nextenterproductdata
 
 Enter Product Data
@@ -120,7 +88,7 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+    Open Browser With Options    ${URL}    ${REMOTE_URL}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
@@ -128,33 +96,3 @@ Complete Insurance Process For Silver
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
-
-Complete Insurance Process For Gold
-    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-    Enter Vehicle Data
-    Enter Insurant Data
-    Enter Product Data
-    Select Price Option And Validate    gold    334.00    selectgold
-    Click Button    id=nextsendquote
-    Fill Quote Form
-    [Teardown]    Close Browser
-
-Complete Insurance Process For Platinum
-    Open Browser With Options    https://sampleapp.tricentis.com/101/app.php    chrome    https://tricentis-us-sny-0.tdc-host.tricentis-cloud.com:9094/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-    Enter Vehicle Data
-    Enter Insurant Data
-    Enter Product Data
-    Select Price Option And Validate    platinum    655.00    selectplatinum
-    Click Button    id=nextsendquote
-    Fill Quote Form
-    [Teardown]    Close Browser
-
-#Complete Insurance Process For Ultimate
-#    Open Browser With Options    ${URL}    ${browserName}    ${platform}    ${REMOTE_URL}    ${RUN_REMOTE}
-#    Enter Vehicle Data
-#    Enter Insurant Data
- #   Enter Product Data
-#    Select Price Option And Validate    ultimate    1248.00    selectultimate
- #   Click Button    id=nextsendquote
-#    Fill Quote Form
-#    [Teardown]    Close Browser
