@@ -2,24 +2,96 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${URL}                https://sampleapp.tricentis.com/101/app.php
-${REMOTE_URL}         https://appium.tdc.tricentis-cloud.com:443/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
-${BROWSER_NAME}       "chrome"
+${URL}    https://sampleapp.tricentis.com/101/app.php
+#${browser_type}    Chrome
+#${remote_url}    https://appium.tdc.tricentis-cloud.com:443/v0/403b52aad7e54e5fae88576008b3b6ad/wd/hub
+#${run_remote}	True
 
 *** Keywords ***
 Open Browser With Options
-    [Arguments]    ${URL}  ${REMOTE_URL}
-    ${options}=    Set Chrome Options
-    Open Browser    ${URL}    ${BROWSER_NAME}  remote_url=${REMOTE_URL}  options=${options}
+    [Arguments]    ${url}    ${browser_type}    ${remote_url}    ${run_remote}
+    ${options}=    Set Browser Options    ${browser_type}
+    Run Keyword If    '${run_remote}'=='True'    Open Browser    ${URL}    ${browser_type}  remote_url=${REMOTE_URL}  options=${options}
+    Run Keyword If    '${run_remote}'=='False'   Open Local Browser With Options    ${URL}    ${browser_type}
 
-Set Chrome Options
-    ${chrome_options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
-    Call Method    ${chrome_options}    add_argument    --headless
-    Call Method    ${chrome_options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
-    Call Method    ${chrome_options}    set_capability    "tdc:selector"    'device_skus:"Chrome"'
-    Set Suite Variable    ${chrome_options}
-    Return From Keyword    ${chrome_options}
+Open Local Browser With Options
+    [Arguments]    ${url}    ${browser}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Run Keyword If    '${browser}' == 'Opera'    Add Opera Options    ${options}
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    add_argument    --no-sandbox
+    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Open Browser    ${url}    ${browser}    options=${options}
 
+Set Browser Options
+    [Arguments]    ${browser_type}
+    #${options}=    Evaluate    sys.modules['selenium.webdriver'].${browser_type.capitalize()}Options()    sys, selenium.webdriver
+    Run Keyword If    '${run_remote}' == 'FALSE' and '${browser_type}'=='Chrome'    Set Chrome Local Specific Options    ${options}
+    Run Keyword If    '${browser_type}'=='Chrome'    Set Chrome Remote Specific Options    ${options}
+    Run Keyword If    '${browser_type}'=='Firefox'   Set Firefox Remote Specific Options   ${options}
+    Run Keyword If    '${browser_type}'=='Edge'      Set Edge Remote Specific Options      ${options}
+    Run Keyword If    '${browser_type}'=='Opera'      Set Edge Remote Specific Options      ${options}
+    Run Keyword If    '${browser_type}'=='Safari'    Set Safari Remote Specific Options    ${options}
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}
+	
+Set Chrome Local Specific Options
+    [Arguments]    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    set_capability    browserName    Chrome
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}   
+
+Set Chrome Remote Specific Options
+    [Arguments]    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    set_capability    browserName    chrome
+    Call Method    ${options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
+    Call Method    ${options}    set_capability    "tdc:selector"    'device_skus:"Chrome"'
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}
+
+Set Firefox Remote Specific Options
+    [Arguments]    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].FirefoxOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    set_capability    browserName    firefox
+    #Call Method    ${options}    set_capability    "browserVersion"    "110.0"
+    Call Method    ${options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
+    Call Method    ${options}    set_capability    "tdc:selector"    'device_skus:"Firefox"'
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}
+
+Set Edge Remote Specific Options
+    [Arguments]    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].EdgeOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    set_capability    browserName    MicrosoftEdge
+    Call Method    ${options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
+    Call Method    ${options}    set_capability    "tdc:selector"    'device_skus:"Microsoftedge"'
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}
+
+Set Safari Remote Specific Options
+    [Arguments]    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].SafariOptions()    sys, selenium.webdriver
+    Call Method    ${options}    set_capability    browserName    safari
+    Call Method    ${options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
+    Call Method    ${options}    set_capability    "tdc:selector"    'device_skus:"Safari"'
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}
+
+Set Opera Remote Specific Options
+    [Arguments]    ${options}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    set_capability    browserName    opera
+    Call Method    ${options}    set_capability    "tdc:initialScreenSize"    {'width': 1920, 'height': 1080}
+    Call Method    ${options}    set_capability    "tdc:selector"    'device_skus:"Opera"'
+    Set Suite Variable    ${options}
+    Return From Keyword    ${options}
 
 Select Price Option And Validate
     [Arguments]    ${price_option}    ${expected_price}    ${pricOpts}
@@ -88,11 +160,41 @@ Enter Product Data
 
 *** Test Cases ***
 Complete Insurance Process For Silver
-    Open Browser With Options    ${URL}    ${REMOTE_URL}
+    Open Browser With Options    ${URL}    ${browser_type}    ${REMOTE_URL}    ${RUN_REMOTE}
     Enter Vehicle Data
     Enter Insurant Data
     Enter Product Data
     Select Price Option And Validate    silver    113.00    selectsilver
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
+
+Complete Insurance Process For Gold
+    Open Browser With Options    ${URL}    ${browser_type}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
+    Select Price Option And Validate    gold    334.00    selectgold
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
+
+Complete Insurance Process For Platinum
+    Open Browser With Options    ${URL}    ${browser_type}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
+    Select Price Option And Validate    platinum    655.00    selectplatinum
+    Click Button    id=nextsendquote
+    Fill Quote Form
+    [Teardown]    Close Browser
+
+Complete Insurance Process For Ultimate
+    Open Browser With Options     ${URL}    ${browser_type}    ${REMOTE_URL}    ${RUN_REMOTE}
+    Enter Vehicle Data
+    Enter Insurant Data
+    Enter Product Data
+    Select Price Option And Validate    ultimate    1248.00    selectultimate
     Click Button    id=nextsendquote
     Fill Quote Form
     [Teardown]    Close Browser
